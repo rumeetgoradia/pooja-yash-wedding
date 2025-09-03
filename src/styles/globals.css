@@ -1,14 +1,12 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
-
 @theme {
   --font-sans:
     var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-serif:
-    var(--font-eb-garamond), ui-serif, Georgia, Cambria, "Times New Roman",
+    var(--font-libre-bodoni), ui-serif, Georgia, Cambria, "Times New Roman",
     Times, serif;
 }
 
@@ -80,17 +78,17 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --color-brand-50: oklch(95.82% 0.004 17.64);
-  --color-brand-100: oklch(92.32% 0.01 9.73);
-  --color-brand-200: oklch(84.82% 0.02 9.94);
-  --color-brand-300: oklch(76.23% 0.035 8.92);
-  --color-brand-400: oklch(68.69% 0.054 9.49);
-  --color-brand-500: oklch(61.27% 0.075 10.66);
-  --color-brand-600: oklch(53% 0.065 10.17);
-  --color-brand-700: oklch(42.84% 0.053 9.24);
-  --color-brand-800: oklch(33.28% 0.042 10.25);
-  --color-brand-900: oklch(23.65% 0.027 11.66);
-  --color-brand-950: oklch(19.18% 0.022 9.28);
+  --color-brand-50: oklch(96.18% 0.013 11.69);
+  --color-brand-100: oklch(92.21% 0.028 6.75);
+  --color-brand-200: oklch(84.5% 0.058 7.68);
+  --color-brand-300: oklch(76.22% 0.093 10.17);
+  --color-brand-400: oklch(69.06% 0.127 11.63);
+  --color-brand-500: oklch(60.33% 0.171 15.22);
+  --color-brand-600: oklch(52.13% 0.174 17.69);
+  --color-brand-700: oklch(42.69% 0.14 17.14);
+  --color-brand-800: oklch(31.79% 0.099 16.53);
+  --color-brand-900: oklch(20.99% 0.056 14.53);
+  --color-brand-950: oklch(15.72% 0.035 10.68);
 }
 
 :root {
@@ -101,7 +99,7 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.6127 0.075 10.66); /*  #ac7179  */
+  --primary: oklch(76.22% 0.093 10.17); /*  color-brand-300  */
   --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);

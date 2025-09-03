@@ -1,7 +1,7 @@
 import "~/styles/globals.css";
 
 import { type Metadata } from "next";
-import { Geist, EB_Garamond } from "next/font/google";
+import { Geist, Libre_Bodoni } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
 
@@ -13,19 +13,19 @@ export const metadata: Metadata = {
 
 const geist = Geist({
   subsets: ["latin"],
-          variable: "--font-geist-sans",
+  variable: "--font-geist-sans",
 });
 
-const eb_garamond = EB_Garamond({
-subsets: ["latin"],
-variable: "--font-eb-garamond"
+const libre_bodoni = Libre_Bodoni({
+  subsets: ["latin"],
+  variable: "--font-libre-bodoni",
 });
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${geist.variable} ${eb_garamond.variable}`}>
+    <html lang="en" className={`${geist.variable} ${libre_bodoni.variable}`}>
       <body>
         <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>
