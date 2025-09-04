@@ -24,7 +24,7 @@ export const Hero: React.FC<HeroProps> = ({
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      const newBlur = Math.min(scrollY / 100, 10);
+      const newBlur = Math.min(scrollY / 150, 2.5);
       setBlur(newBlur);
     };
 
@@ -42,7 +42,7 @@ export const Hero: React.FC<HeroProps> = ({
       <section className="relative flex h-[75vh] items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-10 bg-gradient-to-b from-black to-transparent" />
         <div
-          className="transition-filter absolute inset-0 h-full w-full duration-300"
+          className="transition-filter absolute inset-0 h-full w-full"
           style={{ filter: `blur(${blur}px)` }}
         >
           <Image
