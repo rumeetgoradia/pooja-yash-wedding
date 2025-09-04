@@ -11,7 +11,16 @@ export default async function Home() {
   return (
     <main>
       <Hero image={HeroImage}>
-        <h1 className="text-left text-5xl text-white">Pooja & Yash</h1>
+        <>
+          <h1 className="flex flex-col items-center justify-center gap-y-10 pb-16 text-center text-7xl leading-0 text-white text-shadow-md">
+            <span>Pooja</span>
+            <span className="text-5xl">&</span>
+            <span>Yash</span>
+          </h1>
+          <h2 className="text-center text-2xl text-white uppercase italic text-shadow-md">
+            June 19, 2026
+          </h2>
+        </>
       </Hero>
       <p className="h-[2000px]">Lorem ipsum</p>
     </main>

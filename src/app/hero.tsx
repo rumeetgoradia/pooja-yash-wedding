@@ -39,8 +39,8 @@ export const Hero: React.FC<HeroProps> = ({
 
   return (
     <div className="bg-black pt-24">
-      <section className="relative flex h-[75vh] items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-10 bg-gradient-to-b from-black to-transparent" />
+      <section className="relative flex h-[80vh] items-center overflow-hidden">
+        <div className="absolute inset-0 z-10 bg-gradient-to-b from-black to-black/20" />
         <div
           className="transition-filter absolute inset-0 h-full w-full"
           style={{ filter: `blur(${blur}px)` }}
@@ -57,7 +57,7 @@ export const Hero: React.FC<HeroProps> = ({
           />
         </div>
 
-        <div className="relative z-10 w-full p-12">{children}</div>
+        <div className="relative z-10 container w-full">{children}</div>
       </section>
     </div>
   );
