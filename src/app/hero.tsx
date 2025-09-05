@@ -38,8 +38,8 @@ export const Hero: React.FC<HeroProps> = ({
   }, []);
 
   return (
-    <div className="bg-black pt-24">
-      <section className="relative flex h-[80vh] items-center overflow-hidden">
+    <div className="bg-black">
+      <section className="relative flex h-[72vh] items-center overflow-hidden">
         <div className="absolute inset-0 z-10 bg-gradient-to-b from-black to-black/20" />
         <div
           className="transition-filter absolute inset-0 h-full w-full"
@@ -57,7 +57,7 @@ export const Hero: React.FC<HeroProps> = ({
           />
         </div>
 
-        <div className="relative z-10 container w-full">{children}</div>
+        <div className="relative z-10 container">{children}</div>
       </section>
     </div>
   );

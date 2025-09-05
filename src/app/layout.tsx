@@ -1,33 +1,37 @@
 import "~/styles/globals.css";
 
 import { type Metadata } from "next";
-import { Geist, Libre_Bodoni } from "next/font/google";
+import { Geist, Newsreader } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
+import Navbar from "./components/layout/navbar";
 
 export const metadata: Metadata = {
   title: "Pooja & Yash",
   description: "Wedding of Pooja and Yash. June 19, 2026.",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  icons: [{ rel: "icon", url: "/favicon/favicon.ico" }],
 };
 
-const geist = Geist({
+const sans = Geist({
   subsets: ["latin"],
-  variable: "--font-geist-sans",
+  variable: "--font-custom-sans",
 });
 
-const libre_bodoni = Libre_Bodoni({
+const serif = Newsreader({
   subsets: ["latin"],
-  variable: "--font-libre-bodoni",
+  variable: "--font-custom-serif",
 });
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${geist.variable} ${libre_bodoni.variable}`}>
+    <html lang="en" className={`${sans.variable} ${serif.variable}`}>
       <body>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <TRPCReactProvider>
+          <Navbar />
+          {children}
+        </TRPCReactProvider>
       </body>
     </html>
   );
