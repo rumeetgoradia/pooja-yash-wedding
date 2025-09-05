@@ -32,6 +32,36 @@ const ROUTES: { title: string; path: string }[] = [
   },
 ];
 
+const Nav: React.FC<{
+  pathName: string;
+  col?: boolean;
+  className?: string;
+}> = ({ pathName, col, className }) => {
+  return (
+    <nav
+      className={cn(
+        "flex gap-6 text-lg tracking-wide text-white",
+        col && "flex-col",
+        className,
+      )}
+    >
+      {ROUTES.map((route) => (
+        <Link
+          href={route.path}
+          title={route.title}
+          className={cn(
+            "hover:text-primary transition-[color]",
+            pathName === route.path && "text-primary",
+          )}
+          key={`nav-${route.title}`}
+        >
+          {route.title}
+        </Link>
+      ))}
+    </nav>
+  );
+};
+
 const Navbar: React.FC = () => {
   const pathName = usePathname();
 
@@ -40,54 +70,25 @@ const Navbar: React.FC = () => {
       <div className="hidden justify-center bg-black md:flex">
         <div className="container flex max-w-[64rem] items-center justify-between px-8 pt-4 text-white lg:pt-8"></div>
       </div>
-
       <header className="sticky top-0 z-50 flex w-full justify-center bg-black py-4">
         <div className="container flex items-center justify-between">
           <Link href="/" title="Pooja & Yash">
             <Logo className="hover:fill-primary w-[36px] fill-white transition-[fill] md:w-[48px]" />
           </Link>
-          <nav className="hidden gap-6 font-serif md:flex">
-            {ROUTES.map((route) => (
-              <Link
-                href={route.path}
-                title={route.title}
-                className={cn(
-                  "hover:text-primary text-lg font-medium text-white transition-[color]",
-                  pathName === route.path && "text-primary",
-                )}
-                key={`nav-${route.title}`}
-              >
-                {route.title}
-              </Link>
-            ))}
-          </nav>
+          <Nav pathName={pathName} className="max-md:hidden" />
           <div className="md:hidden">
             <Sheet>
               <SheetTrigger>
                 <Button
                   variant="unstyled"
                   className="text-lg text-white"
-                  size="icon"
+                  size="default"
                 >
-                  <Menu width={32} height={32} />
+                  <Menu className="size-12" />
                 </Button>
               </SheetTrigger>
-              <SheetContent className="border-none bg-black px-8 py-20 text-white">
-                <nav className="flex flex-col gap-6 font-serif">
-                  {ROUTES.map((route) => (
-                    <Link
-                      href={route.path}
-                      title={route.title}
-                      className={cn(
-                        "hover:text-primary text-xl font-medium text-white transition-[color]",
-                        pathName === route.path && "text-primary",
-                      )}
-                      key={`nav-${route.title}`}
-                    >
-                      {route.title}
-                    </Link>
-                  ))}
-                </nav>
+              <SheetContent className="border-none bg-black px-8 py-24 text-white">
+                <Nav pathName={pathName} col />
               </SheetContent>
             </Sheet>
           </div>
