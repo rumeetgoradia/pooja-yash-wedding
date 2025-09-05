@@ -1,10 +1,10 @@
 import { Hero, type HeroImageProps } from "./hero";
-import LandingImage from "public/Landing.jpg";
+import LandingImage from "public/Landing2.png";
 
 const HeroImage: HeroImageProps = {
   src: LandingImage,
   alt: "Pooja & Yash",
-  className: "object-[82.5%] md:object-center",
+  className: "object-[48%] md:object-center",
 };
 
 const AndLine = () => {
