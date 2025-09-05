@@ -3,10 +3,10 @@
 
 @theme {
   --font-sans:
-    var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif,
+    var(--font-custom-sans), ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-serif:
-    var(--font-libre-bodoni), ui-serif, Georgia, Cambria, "Times New Roman",
+    var(--font-custom-serif), ui-serif, Georgia, Cambria, "Times New Roman",
     Times, serif;
 }
 
@@ -129,5 +129,6 @@
 @utility container {
   margin-inline: auto;
   padding-inline: 2rem;
-  max-width: var(--container-lg);
+  max-width: var(--container-5xl);
+  width: 100%;
 }
