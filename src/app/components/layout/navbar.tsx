@@ -73,7 +73,7 @@ const Navbar: React.FC = () => {
       <header className="sticky top-0 z-50 flex w-full justify-center bg-black py-4">
         <div className="container flex items-center justify-between">
           <Link href="/" title="Pooja & Yash">
-            <Logo className="hover:fill-primary w-[36px] fill-white transition-[fill] md:w-[48px]" />
+            <Logo className="hover:fill-primary w-[48px] fill-white transition-[fill] md:w-[64px]" />
           </Link>
           <Nav pathName={pathName} className="max-md:hidden" />
           <div className="md:hidden">
@@ -84,7 +84,7 @@ const Navbar: React.FC = () => {
                   className="text-lg text-white"
                   size="default"
                 >
-                  <Menu className="size-12" />
+                  <Menu className="size-8 font-light" />
                 </Button>
               </SheetTrigger>
               <SheetContent className="border-none bg-black px-8 py-24 text-white">
