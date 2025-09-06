@@ -1,6 +1,6 @@
 import Logo from "~/components/logo";
 import { Hero, type HeroImageProps } from "./hero";
-import LandingImage from "public/Landing2.png";
+import LandingImage from "public/Landing3.png";
 import FirstImage from "public/Home/first.jpg";
 import Image from "next/image";
 
