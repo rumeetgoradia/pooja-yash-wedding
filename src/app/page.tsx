@@ -36,29 +36,29 @@ export default async function Home() {
           </div>
         </div>
       </Hero>
-      <div className="container flex flex-col gap-28 py-32 md:flex-row">
-        <div className="flex w-full flex-col items-center justify-center gap-12">
+      <div className="container flex flex-col items-start gap-20 py-32 md:flex-row md:gap-28">
+        <div className="flex w-full flex-col items-center justify-center gap-12 md:gap-24">
           <div className="border-primary border-2 p-4">
             <Logo className="fill-primary w-[100px]" />
           </div>
           <div className="flex flex-col gap-4">
-            <div className="text-center font-serif text-2xl font-light">
+            <div className="text-center font-serif text-2xl font-light md:text-4xl">
               Together with their families,
             </div>
-            <div className="text-serif font-script mb-4 text-center text-[50px] sm:text-[75px] md:text-[100px]">
+            <div className="text-serif font-script mb-4 text-center text-[50px] sm:text-[75px] md:text-[120px]">
               Pooja and Yash
             </div>
-            <div className="text-center font-serif text-xl font-light">
+            <div className="text-center font-serif text-xl font-light md:text-3xl">
               request the honor of your presence at the celebration of their
               marriage.
             </div>
           </div>
-          <div className="flex flex-col items-center justify-center gap-6">
-            <div className="flex flex-col items-center justify-center gap-2 text-center font-serif text-2xl">
+          <div className="flex flex-col items-center justify-center gap-6 font-serif text-2xl md:text-4xl">
+            <div className="flex flex-col items-center justify-center gap-2 text-center">
               <div className="font-light">Summer of 2026</div>
               <div className="italic">June 18 &mdash; June 21</div>
             </div>
-            <div className="flex flex-col items-center justify-center gap-2 text-center font-serif text-2xl">
+            <div className="flex flex-col items-center justify-center gap-2 text-center">
               <div className="font-light">Naples, Florida</div>
               <div className="italic">
                 The Ritz Carlton Naples, Beach Resort
@@ -70,7 +70,12 @@ export default async function Home() {
           </div>
         </div>
         <div className="w-full">
-          <Image src={FirstImage} alt="Pooja & Yash" placeholder="blur" />
+          <Image
+            src={FirstImage}
+            alt="Pooja & Yash"
+            placeholder="blur"
+            className="rounded-sm"
+          />
         </div>
       </div>
     </main>
