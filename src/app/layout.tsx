@@ -23,6 +23,7 @@ const serif = Newsreader({
 });
 
 const script = Lavishly_Yours({
+  subsets: ["latin"],
   weight: "400",
   variable: "--font-custom-script",
 });
