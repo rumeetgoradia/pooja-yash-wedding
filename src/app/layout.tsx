@@ -1,10 +1,10 @@
 import "~/styles/globals.css";
 
 import { type Metadata } from "next";
-import { Geist, Newsreader } from "next/font/google";
+import { Geist, Lavishly_Yours, Newsreader } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
-import Navbar from "./components/layout/navbar";
+import Navbar from "~/components/layout/navbar";
 
 export const metadata: Metadata = {
   title: "Pooja & Yash",
@@ -22,11 +22,19 @@ const serif = Newsreader({
   variable: "--font-custom-serif",
 });
 
+const script = Lavishly_Yours({
+  weight: "400",
+  variable: "--font-custom-script",
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${sans.variable} ${serif.variable}`}>
+    <html
+      lang="en"
+      className={`${sans.variable} ${serif.variable} ${script.variable}`}
+    >
       <body>
         <TRPCReactProvider>
           <Navbar />
