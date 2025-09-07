@@ -5,6 +5,7 @@ import { Geist, Lavishly_Yours, Newsreader } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import Navbar from "~/components/layout/navbar";
+import Background from "~/components/layout/background";
 
 export const metadata: Metadata = {
   title: "Pooja & Yash",
@@ -38,6 +39,7 @@ export default function RootLayout({
     >
       <body>
         <TRPCReactProvider>
+          <Background />
           <Navbar />
           {children}
         </TRPCReactProvider>

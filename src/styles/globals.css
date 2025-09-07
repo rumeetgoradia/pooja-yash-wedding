@@ -11,37 +11,6 @@
   --font-script: var(--font-custom-script);
 }
 
-@layer base {
-  h1 {
-    @apply font-serif;
-  }
-
-  h2 {
-    @apply font-serif;
-  }
-  h3 {
-    @apply font-serif;
-  }
-  h4 {
-    @apply font-serif;
-  }
-
-  h5 {
-    @apply font-serif;
-  }
-  h6 {
-    @apply font-serif;
-  }
-
-  * {
-    @apply border-border outline-ring/50;
-  }
-
-  body {
-    @apply bg-background text-foreground scroll-smooth font-sans;
-  }
-}
-
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -127,9 +96,31 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-@utility container {
-  margin-inline: auto;
-  padding-inline: 1rem;
-  max-width: 80vw;
-  width: 100%;
+@layer base {
+  h1 {
+    @apply font-serif;
+  }
+  h2 {
+    @apply font-serif;
+  }
+  h3 {
+    @apply font-serif;
+  }
+  h4 {
+    @apply font-serif;
+  }
+  h5 {
+    @apply font-serif;
+  }
+  h6 {
+    @apply font-serif;
+  }
+
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply text-foreground scroll-smooth bg-gray-50 font-sans;
+  }
 }

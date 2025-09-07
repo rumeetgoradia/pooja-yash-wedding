@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "~/lib/utils";
 import { Menu, X } from "lucide-react";
 import { Button } from "~/components/ui/button";
+import Container from "~/components/layout/container";
 import {
   SheetContent,
   Sheet,
@@ -40,7 +41,7 @@ const Nav: React.FC<{
   return (
     <nav
       className={cn(
-        "flex gap-6 text-lg tracking-wide text-white",
+        "decoration-primary flex w-full justify-center gap-12 font-serif text-2xl font-light tracking-wider decoration-2 underline-offset-8",
         col && "flex-col",
         className,
       )}
@@ -51,7 +52,7 @@ const Nav: React.FC<{
           title={route.title}
           className={cn(
             "hover:text-primary transition-[color]",
-            pathName === route.path && "text-primary",
+            pathName === route.path && "text-primary underline",
           )}
           key={`nav-${route.title}`}
         >
@@ -66,35 +67,21 @@ const Navbar: React.FC = () => {
   const pathName = usePathname();
 
   return (
-    <>
-      <div className="hidden justify-center bg-black md:flex">
-        <div className="container flex max-w-[64rem] items-center justify-between px-8 pt-4 text-white lg:pt-8"></div>
-      </div>
-      <header className="sticky top-0 z-50 flex w-full justify-center bg-black py-4">
-        <div className="container flex items-center justify-between">
-          <Link href="/" title="Pooja & Yash">
-            <Logo className="hover:fill-primary w-[48px] fill-white transition-[fill] md:w-[64px]" />
-          </Link>
-          <Nav pathName={pathName} className="max-md:hidden" />
-          <div className="md:hidden">
-            <Sheet>
-              <SheetTrigger>
-                <Button
-                  variant="unstyled"
-                  className="text-lg text-white"
-                  size="default"
-                >
-                  <Menu className="size-8 font-light" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent className="border-none bg-black px-8 py-24 text-white">
-                <Nav pathName={pathName} col />
-              </SheetContent>
-            </Sheet>
+    <Container variant="top">
+      <div className="flex flex-col gap-6">
+        <Link href="/" title="Pooja & Yash" className="group relative">
+          <h1 className="group-hover:text-primary relative z-10 flex items-center justify-center gap-6 text-6xl transition-[scale,color] [font-variant:small-caps] group-hover:scale-105">
+            <span>Pooja</span>
+            <span className="font-script pb-4 [font-variant:none]">and</span>
+            <span>Yash</span>
+          </h1>
+          <div className="absolute top-1/2 left-1/2 z-0 -translate-[50%]">
+            <Logo className="fill-foreground/20 group-hover:fill-primary/40 w-[120px] transition-[scale,color] group-hover:scale-105" />
           </div>
-        </div>
-      </header>
-    </>
+        </Link>
+        <Nav pathName={pathName} />
+      </div>
+    </Container>
   );
 };
 
