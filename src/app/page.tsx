@@ -23,7 +23,7 @@ export default async function Home() {
             <p className="text-xl font-light text-gray-600 md:text-2xl">
               Together with their families,
             </p>
-            <p className="text-3xl text-gray-800 [font-variant:small-caps] sm:text-4xl lg:text-5xl">
+            <p className="text-3xl text-gray-800 [font-variant:small-caps] sm:text-4xl md:text-5xl">
               Pooja and Yash
             </p>
             <p className="text-xl font-light text-gray-600 md:text-2xl">

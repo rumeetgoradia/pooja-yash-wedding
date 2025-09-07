@@ -41,7 +41,7 @@ const Nav: React.FC<{
   return (
     <nav
       className={cn(
-        "decoration-primary flex w-full justify-center gap-12 font-serif text-2xl font-light tracking-wider decoration-2 underline-offset-8",
+        "decoration-primary flex w-full justify-center gap-12 font-serif font-light tracking-wider uppercase decoration-2 underline-offset-8 sm:text-lg md:text-xl",
         col && "flex-col",
         className,
       )}
@@ -70,7 +70,7 @@ const Navbar: React.FC = () => {
     <Container variant="top">
       <div className="flex flex-col gap-6">
         <Link href="/" title="Pooja & Yash" className="group relative">
-          <h1 className="group-hover:text-primary relative z-10 flex items-center justify-center gap-6 text-4xl transition-[scale,color] [font-variant:small-caps] group-hover:scale-105 md:text-6xl">
+          <h1 className="group-hover:text-primary relative z-10 flex items-center justify-center gap-6 text-4xl transition-[scale,color] [font-variant:small-caps] group-hover:scale-105 sm:text-5xl md:text-6xl">
             <span>Pooja</span>
             <span className="font-script pb-4 [font-variant:none]">and</span>
             <span>Yash</span>
@@ -79,7 +79,7 @@ const Navbar: React.FC = () => {
             <Logo className="fill-foreground/20 group-hover:fill-primary/40 w-[80px] transition-[scale,color] group-hover:scale-105 md:w-[120px]" />
           </div>
         </Link>
-        <Nav pathName={pathName} className="hidden md:flex" />
+        <Nav pathName={pathName} className="hidden sm:flex" />
       </div>
     </Container>
   );
