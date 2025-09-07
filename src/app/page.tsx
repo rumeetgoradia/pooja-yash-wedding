@@ -6,7 +6,6 @@ import Container from "~/components/layout/container";
 const HeroImage: HeroImageProps = {
   src: LandingImage,
   alt: "Pooja & Yash",
-  className: "object-center",
 };
 
 export default async function Home() {
@@ -17,10 +16,10 @@ export default async function Home() {
         <main className="flex flex-col gap-16 py-8">
           <div className="flex items-center justify-center">
             <div className="border-foreground border-2 p-4">
-              <Logo className="fill-foreground w-[100px]" />
+              <Logo className="fill-foreground w-[60px] md:w-[100px]" />
             </div>
           </div>
-          <div className="flex flex-col items-center justify-center gap-6 font-serif">
+          <div className="flex flex-col items-center justify-center gap-6 text-center font-serif">
             <p className="text-xl font-light text-gray-600 md:text-2xl">
               Together with their families,
             </p>
@@ -34,18 +33,18 @@ export default async function Home() {
           </div>
           <div className="flex flex-col gap-6 text-center tracking-wider">
             <div className="flex flex-col">
-              <p className="font-serif text-3xl [font-variant:small-caps]">
+              <p className="font-serif text-2xl [font-variant:small-caps] md:text-3xl">
                 Summer of 2026
               </p>
-              <p className="text-2xl font-thin uppercase">
+              <p className="text-lg font-thin uppercase md:text-2xl">
                 June 18 &mdash; June 21
               </p>
             </div>
             <div className="flex flex-col">
-              <p className="font-serif text-3xl [font-variant:small-caps]">
+              <p className="font-serif text-2xl [font-variant:small-caps] md:text-3xl">
                 Naples, Florida
               </p>
-              <p className="text-2xl font-thin uppercase">
+              <p className="text-lg font-thin uppercase md:text-2xl">
                 The Ritz Carlton Naples, Beach Resort
               </p>
             </div>

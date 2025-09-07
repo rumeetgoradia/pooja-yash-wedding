@@ -70,16 +70,16 @@ const Navbar: React.FC = () => {
     <Container variant="top">
       <div className="flex flex-col gap-6">
         <Link href="/" title="Pooja & Yash" className="group relative">
-          <h1 className="group-hover:text-primary relative z-10 flex items-center justify-center gap-6 text-6xl transition-[scale,color] [font-variant:small-caps] group-hover:scale-105">
+          <h1 className="group-hover:text-primary relative z-10 flex items-center justify-center gap-6 text-4xl transition-[scale,color] [font-variant:small-caps] group-hover:scale-105 md:text-6xl">
             <span>Pooja</span>
             <span className="font-script pb-4 [font-variant:none]">and</span>
             <span>Yash</span>
           </h1>
           <div className="absolute top-1/2 left-1/2 z-0 -translate-[50%]">
-            <Logo className="fill-foreground/20 group-hover:fill-primary/40 w-[120px] transition-[scale,color] group-hover:scale-105" />
+            <Logo className="fill-foreground/20 group-hover:fill-primary/40 w-[80px] transition-[scale,color] group-hover:scale-105 md:w-[120px]" />
           </div>
         </Link>
-        <Nav pathName={pathName} />
+        <Nav pathName={pathName} className="hidden md:flex" />
       </div>
     </Container>
   );

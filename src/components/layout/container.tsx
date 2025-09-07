@@ -23,7 +23,7 @@ const Container: React.FC<ContainerProps> = ({ variant, children }) => {
       >
         <div
           className={cn(
-            "bg-background border-l-primary/75 border-r-primary/75 w-full border-r-4 border-l-4 py-6",
+            "bg-background border-l-primary/75 border-r-primary/75 w-full border-r-4 border-l-4 px-4 py-6",
             variant === "top" && "border-t-primary/75 rounded-t-sm border-t-4",
             variant === "bottom" &&
               "border-b-primary/75 rounded-b-sm border-b-4",
