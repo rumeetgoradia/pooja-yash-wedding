@@ -130,6 +130,6 @@
 @utility container {
   margin-inline: auto;
   padding-inline: 1rem;
-  max-width: 80vw;
+  max-width: var(--container-3xl);
   width: 100%;
 }

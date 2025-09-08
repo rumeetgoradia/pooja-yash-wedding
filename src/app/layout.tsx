@@ -2,9 +2,11 @@ import "~/styles/globals.css";
 
 import { type Metadata } from "next";
 import { Geist, Lavishly_Yours, Newsreader } from "next/font/google";
+import localFont from "next/font/local";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import Navbar from "~/components/layout/navbar";
+import Background from "~/components/layout/background";
 
 export const metadata: Metadata = {
   title: "Pooja & Yash",
@@ -28,16 +30,23 @@ const script = Lavishly_Yours({
   variable: "--font-custom-script",
 });
 
+const script2 = localFont({
+  src: "../../public/fonts/amsterdam.ttf",
+  variable: "--font-custom-script",
+  weight: "400",
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html
       lang="en"
-      className={`${sans.variable} ${serif.variable} ${script.variable}`}
+      className={`${sans.variable} ${serif.variable} ${script2.variable}`}
     >
       <body>
         <TRPCReactProvider>
+          {/* <Background /> */}
           <Navbar />
           {children}
         </TRPCReactProvider>

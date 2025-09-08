@@ -40,7 +40,7 @@ const Nav: React.FC<{
   return (
     <nav
       className={cn(
-        "flex gap-6 text-lg tracking-wide text-white",
+        "decoration-primary flex w-full justify-center gap-12 font-serif font-light tracking-wider uppercase decoration-2 underline-offset-8 sm:text-lg md:text-xl",
         col && "flex-col",
         className,
       )}
@@ -51,7 +51,7 @@ const Nav: React.FC<{
           title={route.title}
           className={cn(
             "hover:text-primary transition-[color]",
-            pathName === route.path && "text-primary",
+            pathName === route.path && "text-primary underline",
           )}
           key={`nav-${route.title}`}
         >
@@ -66,35 +66,23 @@ const Navbar: React.FC = () => {
   const pathName = usePathname();
 
   return (
-    <>
-      <div className="hidden justify-center bg-black md:flex">
-        <div className="container flex max-w-[64rem] items-center justify-between px-8 pt-4 text-white lg:pt-8"></div>
-      </div>
-      <header className="sticky top-0 z-50 flex w-full justify-center bg-black py-4">
-        <div className="container flex items-center justify-between">
-          <Link href="/" title="Pooja & Yash">
-            <Logo className="hover:fill-primary w-[48px] fill-white transition-[fill] md:w-[64px]" />
-          </Link>
-          <Nav pathName={pathName} className="max-md:hidden" />
-          <div className="md:hidden">
-            <Sheet>
-              <SheetTrigger>
-                <Button
-                  variant="unstyled"
-                  className="text-lg text-white"
-                  size="default"
-                >
-                  <Menu className="size-8 font-light" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent className="border-none bg-black px-8 py-24 text-white">
-                <Nav pathName={pathName} col />
-              </SheetContent>
-            </Sheet>
+    <div className="relative z-1 w-full bg-black py-8 text-white">
+      <div className="container flex flex-col gap-6">
+        <Link href="/" title="Pooja & Yash" className="group relative">
+          <h1 className="group-hover:text-primary relative z-10 flex items-center justify-center gap-6 text-4xl transition-[scale,color] [font-variant:small-caps] group-hover:scale-105 sm:text-5xl md:text-6xl">
+            <span>Pooja</span>
+            <span className="font-script scale-90 [font-variant:none]">
+              and
+            </span>
+            <span>Yash</span>
+          </h1>
+          <div className="absolute top-1/2 left-1/2 z-0 -translate-[50%]">
+            <Logo className="group-hover:fill-primary/40 w-[80px] fill-white/20 transition-[scale,color] group-hover:scale-105 md:w-[120px]" />
           </div>
-        </div>
-      </header>
-    </>
+        </Link>
+        <Nav pathName={pathName} className="hidden sm:flex" />
+      </div>
+    </div>
   );
 };
 
