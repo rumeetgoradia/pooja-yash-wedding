@@ -152,7 +152,7 @@ const Navbar: React.FC = () => {
                   )}
                 >
                   {EMAIL_ADDRESS}
-                </p>{" "}
+                </p>
               </Link>
             </SheetContent>
           </Sheet>
