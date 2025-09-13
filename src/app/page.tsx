@@ -5,6 +5,7 @@ import LandingImage from "public/Landing3.png";
 const HeroImage: HeroImageProps = {
   src: LandingImage,
   alt: "Pooja & Yash",
+  className: "max-sm:object-[43%]",
 };
 
 export default async function Home() {

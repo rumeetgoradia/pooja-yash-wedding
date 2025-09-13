@@ -21,7 +21,7 @@ export const Hero: React.FC<HeroProps> = ({
   return (
     <div className="bg-black">
       <section className="relative flex h-[72vh] items-center overflow-hidden">
-        <div className="absolute inset-0 z-10 bg-gradient-to-b from-black to-transparent to-95%" />
+        <div className="absolute top-0 left-0 z-10 h-[40%] w-full bg-gradient-to-b from-black to-transparent" />
         <div className="transition-filter absolute inset-0 h-full w-full">
           <Image
             src={src}
