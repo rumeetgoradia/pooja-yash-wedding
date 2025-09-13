@@ -1,17 +1,20 @@
 "use client";
+
 import Link from "next/link";
 import Logo from "~/components/logo";
 import { usePathname } from "next/navigation";
 import { cn } from "~/lib/utils";
-import { Menu, X } from "lucide-react";
+import { Mail, Menu } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import {
   SheetContent,
   Sheet,
-  SheetHeader,
   SheetTrigger,
-  SheetClose,
+  SheetTitle,
 } from "~/components/ui/sheet";
+import { Separator } from "../ui/separator";
+import { useState } from "react";
+import { EMAIL_ADDRESS } from "~/lib/constants";
 
 const ROUTES: { title: string; path: string }[] = [
   {
@@ -34,18 +37,21 @@ const ROUTES: { title: string; path: string }[] = [
 
 const Nav: React.FC<{
   pathName: string;
-  col?: boolean;
+  includeHome?: boolean;
   className?: string;
-}> = ({ pathName, col, className }) => {
+}> = ({ pathName, includeHome, className }) => {
+  const routes = includeHome
+    ? [{ title: "Home", path: "/" }, ...ROUTES]
+    : [...ROUTES];
+
   return (
     <nav
       className={cn(
-        "decoration-primary flex w-full justify-center gap-12 font-serif font-light tracking-wider uppercase decoration-2 underline-offset-8 sm:text-lg md:text-xl",
-        col && "flex-col",
+        "decoration-primary font-serif font-light tracking-wider decoration-2 underline-offset-8",
         className,
       )}
     >
-      {ROUTES.map((route) => (
+      {routes.map((route) => (
         <Link
           href={route.path}
           title={route.title}
@@ -64,23 +70,91 @@ const Nav: React.FC<{
 
 const Navbar: React.FC = () => {
   const pathName = usePathname();
+  const [sheetOpen, setSheetOpen] = useState(false);
 
   return (
-    <div className="relative z-1 w-full bg-black py-8 text-white">
-      <div className="container flex flex-col gap-6">
-        <Link href="/" title="Pooja & Yash" className="group relative">
-          <h1 className="group-hover:text-primary relative z-10 flex items-center justify-center gap-6 text-4xl transition-[scale,color] [font-variant:small-caps] group-hover:scale-105 sm:text-5xl md:text-6xl">
-            <span>Pooja</span>
-            <span className="font-script scale-90 [font-variant:none]">
-              and
-            </span>
-            <span>Yash</span>
-          </h1>
-          <div className="absolute top-1/2 left-1/2 z-0 -translate-[50%]">
-            <Logo className="group-hover:fill-primary/40 w-[80px] fill-white/20 transition-[scale,color] group-hover:scale-105 md:w-[120px]" />
-          </div>
+    <div className="w-full bg-black py-6 text-white">
+      <div className="container flex items-center justify-between">
+        <Link href="/" className="cursor-pointer">
+          <Logo className="hover:fill-primary w-[60px] fill-white transition-[fill] md:w-[90px]" />
         </Link>
-        <Nav pathName={pathName} className="hidden sm:flex" />
+        <div className="max-sm:hidden">
+          <nav
+            className={cn(
+              "decoration-primary font-serif font-light tracking-wider decoration-2 underline-offset-8",
+              "flex gap-8 md:gap-12 md:text-lg",
+            )}
+          >
+            {ROUTES.map((route) => (
+              <Link
+                href={route.path}
+                title={route.title}
+                className={cn(
+                  "hover:text-primary transition-[color]",
+                  pathName === route.path && "text-primary underline",
+                )}
+                key={`nav-${route.title}`}
+              >
+                {route.title}
+              </Link>
+            ))}
+          </nav>
+        </div>
+        <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+          <SheetTrigger className="sm:hidden">
+            <Button variant="unstyled" size="icon" className="cursor-pointer">
+              <Menu className="size-6" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent className="flex h-full flex-col gap-8 px-8 pt-18 pb-10 sm:hidden">
+            <SheetTitle className="flex w-full grow-0 flex-col gap-1">
+              <div className="-mb-1 font-serif text-xl tracking-wide [font-variant:small-caps]">
+                Pooja & Yash
+              </div>
+              <div className="font-sans font-light tracking-wider uppercase">
+                June 21, 2026
+              </div>
+              <div className="font-sans font-light tracking-wider uppercase">
+                Naples, Florida
+              </div>
+            </SheetTitle>
+            <Separator />
+            <nav className="flex grow-1 flex-col gap-3">
+              {[{ title: "Home", path: "/" }, ...ROUTES].map((route) => (
+                <Link
+                  href={route.path}
+                  title={route.title}
+                  className={cn(
+                    "hover:text-primary border-l-4 border-l-transparent px-4 py-2 text-lg font-medium transition-colors",
+                    pathName === route.path &&
+                      "text-primary bg-primary/5 border-l-primary",
+                  )}
+                  key={`nav-${route.title}`}
+                  onClick={() => setSheetOpen(false)}
+                >
+                  {route.title}
+                </Link>
+              ))}
+            </nav>
+            <Separator />
+            <Link
+              className="group flex items-center justify-center gap-4"
+              href={`mailto::${EMAIL_ADDRESS}`}
+            >
+              <div className="bg-primary/50 group-hover:bg-primary flex items-center justify-center rounded-full p-1 transition-colors">
+                <Mail className="text-background h-3 w-3" />
+              </div>{" "}
+              <p
+                className={cn(
+                  "font-serif",
+                  "text-primary text-xs tracking-widest decoration-1 underline-offset-4 group-hover:underline",
+                )}
+              >
+                {EMAIL_ADDRESS}
+              </p>{" "}
+            </Link>
+          </SheetContent>
+        </Sheet>
       </div>
     </div>
   );
