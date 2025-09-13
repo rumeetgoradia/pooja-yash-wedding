@@ -100,61 +100,63 @@ const Navbar: React.FC = () => {
             ))}
           </nav>
         </div>
-        <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-          <SheetTrigger className="sm:hidden">
-            <Button variant="unstyled" size="icon" className="cursor-pointer">
-              <Menu className="size-6" />
-            </Button>
-          </SheetTrigger>
-          <SheetContent className="flex h-full flex-col gap-8 px-8 pt-18 pb-10 sm:hidden">
-            <SheetTitle className="flex w-full grow-0 flex-col gap-1">
-              <div className="-mb-1 font-serif text-xl tracking-wide [font-variant:small-caps]">
-                Pooja & Yash
-              </div>
-              <div className="font-sans font-light tracking-wider uppercase">
-                June 21, 2026
-              </div>
-              <div className="font-sans font-light tracking-wider uppercase">
-                Naples, Florida
-              </div>
-            </SheetTitle>
-            <Separator />
-            <nav className="flex grow-1 flex-col gap-3">
-              {[{ title: "Home", path: "/" }, ...ROUTES].map((route) => (
-                <Link
-                  href={route.path}
-                  title={route.title}
-                  className={cn(
-                    "hover:text-primary border-l-4 border-l-transparent px-4 py-2 text-lg font-medium transition-colors",
-                    pathName === route.path &&
-                      "text-primary bg-primary/5 border-l-primary",
-                  )}
-                  key={`nav-${route.title}`}
-                  onClick={() => setSheetOpen(false)}
-                >
-                  {route.title}
-                </Link>
-              ))}
-            </nav>
-            <Separator />
-            <Link
-              className="group flex items-center justify-center gap-4"
-              href={`mailto::${EMAIL_ADDRESS}`}
-            >
-              <div className="bg-primary/50 group-hover:bg-primary flex items-center justify-center rounded-full p-1 transition-colors">
-                <Mail className="text-background h-3 w-3" />
-              </div>{" "}
-              <p
-                className={cn(
-                  "font-serif",
-                  "text-primary text-xs tracking-widest decoration-1 underline-offset-4 group-hover:underline",
-                )}
+        <div className="sm:hidden">
+          <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+            <SheetTrigger>
+              <Button variant="unstyled" size="icon" className="cursor-pointer">
+                <Menu className="size-6" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent className="flex h-full flex-col gap-8 px-8 pt-18 pb-10">
+              <SheetTitle className="flex w-full grow-0 flex-col gap-1">
+                <div className="-mb-1 font-serif text-xl tracking-wide [font-variant:small-caps]">
+                  Pooja & Yash
+                </div>
+                <div className="font-sans font-light tracking-wider uppercase">
+                  June 21, 2026
+                </div>
+                <div className="font-sans font-light tracking-wider uppercase">
+                  Naples, Florida
+                </div>
+              </SheetTitle>
+              <Separator />
+              <nav className="flex grow-1 flex-col gap-3">
+                {[{ title: "Home", path: "/" }, ...ROUTES].map((route) => (
+                  <Link
+                    href={route.path}
+                    title={route.title}
+                    className={cn(
+                      "hover:text-primary border-l-4 border-l-transparent px-4 py-2 text-lg font-medium transition-colors",
+                      pathName === route.path &&
+                        "text-primary bg-primary/5 border-l-primary",
+                    )}
+                    key={`nav-${route.title}`}
+                    onClick={() => setSheetOpen(false)}
+                  >
+                    {route.title}
+                  </Link>
+                ))}
+              </nav>
+              <Separator />
+              <Link
+                className="group flex items-center justify-center gap-4"
+                href={`mailto::${EMAIL_ADDRESS}`}
               >
-                {EMAIL_ADDRESS}
-              </p>{" "}
-            </Link>
-          </SheetContent>
-        </Sheet>
+                <div className="bg-primary/50 group-hover:bg-primary flex items-center justify-center rounded-full p-1 transition-colors">
+                  <Mail className="text-background h-3 w-3" />
+                </div>{" "}
+                <p
+                  className={cn(
+                    "font-serif",
+                    "text-primary text-xs tracking-widest decoration-1 underline-offset-4 group-hover:underline",
+                  )}
+                >
+                  {EMAIL_ADDRESS}
+                </p>{" "}
+              </Link>
+            </SheetContent>
+          </Sheet>
+        </div>
       </div>
     </div>
   );
