@@ -35,39 +35,6 @@ const ROUTES: { title: string; path: string }[] = [
   },
 ];
 
-const Nav: React.FC<{
-  pathName: string;
-  includeHome?: boolean;
-  className?: string;
-}> = ({ pathName, includeHome, className }) => {
-  const routes = includeHome
-    ? [{ title: "Home", path: "/" }, ...ROUTES]
-    : [...ROUTES];
-
-  return (
-    <nav
-      className={cn(
-        "decoration-primary font-serif font-light tracking-wider decoration-2 underline-offset-8",
-        className,
-      )}
-    >
-      {routes.map((route) => (
-        <Link
-          href={route.path}
-          title={route.title}
-          className={cn(
-            "hover:text-primary transition-[color]",
-            pathName === route.path && "text-primary underline",
-          )}
-          key={`nav-${route.title}`}
-        >
-          {route.title}
-        </Link>
-      ))}
-    </nav>
-  );
-};
-
 const Navbar: React.FC = () => {
   const pathName = usePathname();
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -108,7 +75,7 @@ const Navbar: React.FC = () => {
               </Button>
             </SheetTrigger>
             <SheetContent className="flex h-full flex-col gap-8 px-8 pt-18 pb-10">
-              <SheetTitle className="flex w-full grow-0 flex-col gap-1">
+              <SheetTitle className="flex w-full grow-0 flex-col">
                 <div className="-mb-1 font-serif text-xl tracking-wide [font-variant:small-caps]">
                   Pooja & Yash
                 </div>
