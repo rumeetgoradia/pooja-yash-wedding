@@ -1,6 +1,8 @@
 import Logo from "~/components/logo";
+import DisplayImage from "public/home/piano.jpg";
 import { Hero, type HeroImageProps } from "~/components/layout/hero";
 import LandingImage from "public/Landing3.png";
+import Image from "next/image";
 
 const HeroImage: HeroImageProps = {
   src: LandingImage,
@@ -12,40 +14,62 @@ export default async function Home() {
   return (
     <>
       <Hero image={HeroImage} />
-      <main className="container flex flex-col gap-16 py-24">
-        <div className="flex items-center justify-center">
-          <div className="border-foreground border-2 p-4">
-            <Logo className="fill-foreground w-[60px] md:w-[100px]" />
-          </div>
-        </div>
-        <div className="flex flex-col items-center justify-center gap-6 text-center font-serif">
-          <p className="text-xl font-light text-gray-600 md:text-2xl">
-            Together with their families,
-          </p>
-          <p className="font-script my-8 text-5xl text-gray-800 sm:text-6xl md:my-20 md:text-7xl">
-            Pooja and Yash
-          </p>
-          <p className="text-xl font-light text-gray-600 md:text-2xl">
-            request the honor of your presence at the celebration of their
-            marriage.
-          </p>
-        </div>
-        <div className="flex flex-col gap-6 text-center tracking-wider">
-          <div className="flex flex-col">
-            <p className="font-serif text-2xl [font-variant:small-caps] md:text-3xl">
-              Summer of 2026
-            </p>
-            <p className="text-lg font-thin uppercase md:text-2xl">
-              June 18 &mdash; June 21
-            </p>
-          </div>
-          <div className="flex flex-col">
-            <p className="font-serif text-2xl [font-variant:small-caps] md:text-3xl">
-              Naples, Florida
-            </p>
-            <p className="text-lg font-thin uppercase md:text-2xl">
-              The Ritz Carlton Naples, Beach Resort
-            </p>
+
+      <main>
+        <div className="container py-24 sm:py-32">
+          <div className="grid grid-cols-1 items-center gap-y-16 lg:grid-cols-2 lg:gap-x-20">
+            {/* Text Content */}
+            <div className="flex flex-col">
+              <div className="flex items-center justify-center lg:justify-start">
+                <div className="border-primary border p-3">
+                  <Logo className="fill-primary w-[80px]" />
+                </div>
+              </div>
+
+              <div className="mt-12 flex flex-col gap-8 text-center lg:mt-16 lg:gap-10 lg:text-left">
+                <div className="font-serif">
+                  <p className="text-xl font-light text-gray-600">
+                    Together with their families,
+                  </p>
+                  <h2 className="my-6 text-5xl font-light [font-variant:small-caps] sm:text-7xl lg:my-6">
+                    Pooja <span className="text-primary">&</span> Yash
+                  </h2>
+                  <p className="text-xl font-light text-gray-600">
+                    request the honor of your presence at the celebration of
+                    their marriage.
+                  </p>
+                </div>
+
+                <div className="mt-4 flex flex-col gap-8 tracking-wider sm:flex-row sm:justify-center sm:gap-12 lg:justify-start">
+                  <div className="flex basis-1/2 flex-col">
+                    <p className="font-serif text-xl tracking-wide uppercase [font-variant:small-caps] sm:text-2xl">
+                      Summer of 2026
+                    </p>
+                    <p className="text-lg font-thin tracking-wider text-gray-500 uppercase">
+                      June 18 &mdash; June 21
+                    </p>
+                  </div>
+                  <div className="flex basis-1/2 flex-col">
+                    <p className="font-serif text-xl tracking-wide uppercase [font-variant:small-caps] sm:text-2xl">
+                      Naples, Florida
+                    </p>
+                    <p className="text-lg font-thin tracking-wider text-gray-500 uppercase">
+                      The Ritz Carlton Naples, Beach Resort
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Image */}
+            <div className="w-full">
+              <Image
+                src={DisplayImage}
+                alt="Pooja and Yash standing in front of a piano."
+                placeholder="blur"
+                className="h-auto w-full rounded-lg object-cover shadow-2xl"
+              />
+            </div>
           </div>
         </div>
       </main>
