@@ -57,7 +57,7 @@ const Navbar: React.FC = () => {
                 href={route.path}
                 title={route.title}
                 className={cn(
-                  "hover:text-primary transition-[color]",
+                  "hover:text-primary cursor-pointer transition-[color]",
                   pathName === route.path && "text-primary underline",
                 )}
                 key={`nav-${route.title}`}
