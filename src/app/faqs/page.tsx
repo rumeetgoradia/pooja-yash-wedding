@@ -42,8 +42,8 @@ const FAQS_DATA: { question: string; answer: React.ReactNode[] }[] = [
       </>,
       <>
         For any events where Indian attire is suggested, please feel free to
-        wear Western formal wear if you prefer. Your presence is what's most
-        important to us!
+        wear Western formal wear if you prefer. Your presence is what&apos;s
+        most important to us!
       </>,
     ],
   },
