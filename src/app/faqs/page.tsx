@@ -9,98 +9,159 @@ import {
   CollapsibleTrigger,
 } from "~/components/ui/collapsible";
 
-const FAQS_DATA: { question: string; answer: React.ReactNode[] }[] = [
+const FAQS_DATA: {
+  icon: string;
+  question: string;
+  answer: React.ReactNode[];
+}[] = [
   {
-    question: "When and how should I RSVP?",
+    icon: "🕒",
+    question: "When should we plan on arriving?",
     answer: [
       <>
-        We kindly request that you RSVP by <strong>April 15th, 2026</strong>.
-        You can RSVP for each event directly on the{" "}
-        <Link
-          className="text-primary underline-offset-4 hover:underline"
-          href="/schedule"
-        >
-          Schedule
-        </Link>{" "}
-        page of our website.
+        The celebrations begin with a Welcome Dinner on Thursday evening (June
+        18). We recommend arriving earlier that day to start the festivities
+        with us!
       </>,
     ],
   },
   {
-    question: "What is the dress code for the events?",
+    icon: "🏝️",
+    question: "Is this an all-inclusive resort?",
     answer: [
       <>
-        The dress code for each event is listed on the{" "}
-        <Link
-          className="text-primary underline-offset-4 hover:underline"
-          href="/schedule"
-        >
-          Schedule
-        </Link>{" "}
-        page. We encourage guests to wear vibrant, festive attire for the
-        Sangeet and formal wear for the Wedding Ceremony and Reception.
-      </>,
-      <>
-        For any events where Indian attire is suggested, please feel free to
-        wear Western formal wear if you prefer. Your presence is what&apos;s
-        most important to us!
+        No, this is not an all-inclusive resort. However, many wonderful
+        amenities are included in your stay (see below!).
       </>,
     ],
   },
   {
-    question: "How do I get to the venue?",
+    icon: "✈️",
+    question: "Which airport should I fly into?",
     answer: [
       <>
-        All wedding events will be held at{" "}
-        <strong>The Ritz-Carlton Naples, Beach Resort</strong>. The closest
-        airport is{" "}
-        <strong>Southwest Florida International Airport (RSW)</strong>, about a
-        30-minute drive away. We recommend using a ride-sharing service or
-        renting a car.
+        The closest airport is Southwest Florida International Airport (RSW) —
+        approximately 27 miles from the resort.
       </>,
     ],
   },
   {
-    question: "Where should I stay?",
+    icon: "🎨",
+    question: "Are there any colors guests should avoid wearing?",
     answer: [
       <>
-        We have reserved a block of rooms at a special rate at{" "}
-        <strong>The Ritz-Carlton Naples, Beach Resort</strong>. Please visit the{" "}
-        <Link
-          className="text-primary underline-offset-4 hover:underline"
-          href="/accommodations"
-        >
-          Accommodations
-        </Link>{" "}
-        page to find the booking link.
+        We can&apos;t wait to see everyone dressed in their favorite outfits and
+        Indian attire! We kindly ask that you avoid wearing black on the Wedding
+        Day and Grah Shanti out of respect for tradition.
       </>,
     ],
   },
   {
-    question: "Are children welcome?",
+    icon: "🌡️",
+    question: "What's the weather like in South Florida in June?",
     answer: [
       <>
-        While we love your little ones, our wedding events will be adults-only.
-        We appreciate you making arrangements ahead of time so you can celebrate
-        with us.
+        Hot and humid. Be sure to pack light, breathable clothing — and
+        don&apos;t forget your sunscreen!
+      </>,
+    ],
+  },
+  {
+    icon: "🚗",
+    question: "Is parking available?",
+    answer: [<>Yes, free valet parking is available at the resort.</>],
+  },
+  {
+    icon: "💵",
+    question: "Are there any extra fees beyond the room rate?",
+    answer: [
+      <>
+        Nope! The daily resort fee has been gifted to you, so you won&apos;t be
+        charged anything beyond your room rate.
+      </>,
+    ],
+  },
+  {
+    icon: "🎉",
+    question: "What activities and amenities are included at the resort?",
+    answer: [
+      <>
+        There&apos;s something for everyone to enjoy! The resort stay includes:
+        <ul className="mt-4 list-disc space-y-2 pl-6">
+          <li>
+            Two beach chairs & towel service at The Ritz-Carlton, Naples Beach
+            Resort
+          </li>
+          <li>One beach umbrella</li>
+          <li>Driving range access at Tiburón Golf Club</li>
+          <li>Fitness & yoga classes</li>
+          <li>Two-hour rental of two resort bicycles</li>
+          <li>Enhanced in-room Wi-Fi</li>
+          <li>Access to the Teen Lounge, VUE</li>
+          <li>Shuttle service between both Ritz-Carlton properties</li>
+          <li>
+            Water park for kids and golfing for adults at The Ritz-Carlton
+            Naples, Tiburón
+          </li>
+        </ul>
+      </>,
+    ],
+  },
+  {
+    icon: "🎁",
+    question: "Is there a gift registry?",
+    answer: [
+      <>
+        No gifts, please! Your presence at our wedding is the greatest gift we
+        could ask for. We&apos;re so grateful to have you celebrating with us.
+      </>,
+    ],
+  },
+  {
+    icon: "🏨",
+    question: "Should I wait to book my room?",
+    answer: [
+      <>
+        Please book as soon as possible to take advantage of our room block —
+        especially if you need a room with two beds, as those are limited. If
+        you&apos;re turning the trip into a vacation, our discounted rate
+        applies two days before and two days after the wedding events.
+      </>,
+    ],
+  },
+  {
+    icon: "🌙",
+    question: "Can we go to the beach at night?",
+    answer: [
+      <>
+        While the beach is beautiful at night, the resort has a strict
+        no-swimming policy after dark due to sea turtle nesting season. Thank
+        you for helping protect the wildlife!
       </>,
     ],
   },
 ];
 
+// --- 2. The refactored component to render the new structure ---
 function FaqList() {
   return (
     <div className="mx-auto max-w-3xl">
       {FAQS_DATA.map((faq, index) => (
         <Collapsible key={index} className="border-b border-gray-200">
-          <CollapsibleTrigger className="flex w-full items-center justify-between py-6 text-left hover:bg-gray-50/50">
-            <h3 className="text-lg font-medium text-gray-900">
-              {faq.question}
-            </h3>
+          <CollapsibleTrigger className="flex w-full items-center justify-between gap-4 py-6 text-left hover:bg-gray-50/50">
+            {/* Group icon and question for proper alignment */}
+            <div className="flex items-center gap-4">
+              <span className="text-2xl" aria-hidden="true">
+                {faq.icon}
+              </span>
+              <h3 className="text-lg font-medium text-gray-900">
+                {faq.question}
+              </h3>
+            </div>
             <ChevronDown className="size-5 shrink-0 text-gray-500 transition-transform duration-300 ease-in-out [data-state=open]:rotate-180" />
           </CollapsibleTrigger>
           <CollapsibleContent className="data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down overflow-hidden transition-all">
-            <div className="space-y-4 px-2 pb-6 text-base text-gray-600">
+            <div className="space-y-4 pr-2 pb-6 pl-14 text-base text-gray-600">
               {faq.answer.map((paragraph, pIndex) => (
                 <p key={pIndex}>{paragraph}</p>
               ))}
