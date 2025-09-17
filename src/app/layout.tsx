@@ -1,7 +1,12 @@
 import "~/styles/globals.css";
 
 import { type Metadata } from "next";
-import { Geist, Lavishly_Yours, Newsreader } from "next/font/google";
+import {
+  Cormorant_Garamond,
+  Geist,
+  Lavishly_Yours,
+  Newsreader,
+} from "next/font/google";
 import localFont from "next/font/local";
 
 import { TRPCReactProvider } from "~/trpc/react";
@@ -19,7 +24,7 @@ const sans = Geist({
   variable: "--font-custom-sans",
 });
 
-const serif = Newsreader({
+const serif = Cormorant_Garamond({
   subsets: ["latin"],
   variable: "--font-custom-serif",
 });
@@ -31,7 +36,7 @@ const script = Lavishly_Yours({
 });
 
 const script2 = localFont({
-  src: "../../public/fonts/amsterdam.ttf",
+  src: "../../public/fonts/CitadelScriptStd.otf",
   variable: "--font-custom-script",
   weight: "400",
 });

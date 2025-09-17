@@ -17,8 +17,8 @@ export default function Home() {
       <div className="grid grid-cols-1 items-center gap-y-16 lg:grid-cols-2 lg:gap-x-20">
         <div className="flex flex-col">
           <div className="flex items-center justify-center lg:justify-start">
-            <div className="border-primary border p-3">
-              <Logo className="fill-primary w-[80px]" />
+            <div className="border border-black p-3">
+              <Logo className="w-[80px]" />
             </div>
           </div>
           <div className="mt-12 flex flex-col gap-8 text-center lg:mt-16 lg:gap-10 lg:text-left">
@@ -26,8 +26,8 @@ export default function Home() {
               <p className="text-xl font-light text-gray-600">
                 Together with their families,
               </p>
-              <h2 className="my-6 text-5xl font-light [font-variant:small-caps] sm:text-7xl lg:my-6">
-                Pooja <span className="text-primary">&</span> Yash
+              <h2 className="font-script my-6 text-6xl font-light sm:text-8xl lg:my-6">
+                Pooja & Yash
               </h2>
               <p className="text-xl font-light text-gray-600">
                 request the honor of your presence at the celebration of their
