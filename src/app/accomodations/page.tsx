@@ -25,23 +25,18 @@ function InfoCard({
   ctaHref,
 }: InfoCardProps) {
   return (
-    <div className="flex h-full flex-col rounded-xl bg-white p-8 shadow-lg transition-shadow duration-300 hover:shadow-xl">
-      {/* Icon and Title - Refined icon color */}
+    <div className="flex h-full flex-col rounded-xl border border-gray-200/80 bg-white p-8 shadow-md transition-shadow duration-300 hover:shadow-lg">
       <div className="flex items-center gap-4">
-        <Icon className="size-8 text-gray-500" /> {/* Softer color */}
-        <h3 className="text-foreground mt-1 font-serif text-3xl font-semibold">
+        <Icon className="size-8 text-gray-500" />
+        <h3 className="text-foreground mt-1 font-serif text-3xl font-medium">
           {title}
         </h3>
       </div>
 
-      {/* Description Text - Improved line height for readability */}
       <div className="mt-6 text-base leading-relaxed text-gray-600">
-        {" "}
-        {/* Added leading-relaxed */}
         {children}
       </div>
 
-      {/* Call-to-Action Button */}
       <div className="mt-auto pt-6">
         <Button asChild className="w-full sm:w-auto">
           <a href={ctaHref} target="_blank" rel="noopener noreferrer">

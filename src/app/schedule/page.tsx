@@ -79,7 +79,6 @@ function EventDaySection({
           ))}
         </div>
 
-        {/* RSVP Button for the day */}
         <div className="flex justify-center lg:justify-start">
           <Button
             variant="outline"
@@ -117,11 +116,10 @@ function EventDaySection({
 const SchedulePage = () => {
   return (
     <PageLayout heroImage={HeroImage}>
-      {/* This div adds vertical spacing between each day's section */}
       <div className="flex flex-col gap-20 sm:gap-32">
         {SCHEDULE_DATA.map((day, index) => (
           <EventDaySection
-            key={day.date} // Using date as key, assuming it's unique
+            key={day.date}
             day={day}
             isReversed={index % 2 !== 0} // Alternate layout for every other day
           />
