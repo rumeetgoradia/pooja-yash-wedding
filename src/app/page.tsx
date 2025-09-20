@@ -23,20 +23,20 @@ export default function Home() {
           </div>
           <div className="mt-12 flex flex-col gap-8 text-center lg:mt-16 lg:gap-10 lg:text-left">
             <div className="font-serif">
-              <p className="text-xl font-light text-gray-600">
+              <p className="text-xl text-gray-600">
                 Together with their families,
               </p>
               <h2 className="font-script my-6 text-6xl font-light sm:text-8xl lg:my-6">
                 Pooja & Yash
               </h2>
-              <p className="text-xl font-light text-gray-600">
+              <p className="text-xl text-gray-600">
                 request the honor of your presence at the celebration of their
                 marriage.
               </p>
             </div>
             <div className="mt-4 flex flex-col gap-8 tracking-wider sm:flex-row sm:justify-center sm:gap-12 lg:justify-start">
               <div className="flex basis-1/2 flex-col">
-                <p className="font-serif text-xl tracking-wide uppercase [font-variant:small-caps] sm:text-2xl">
+                <p className="font-serif text-xl font-medium tracking-wide uppercase [font-variant:small-caps] sm:text-2xl">
                   Summer of 2026
                 </p>
                 <p className="text-lg font-thin tracking-wider text-gray-500 uppercase">
@@ -44,7 +44,7 @@ export default function Home() {
                 </p>
               </div>
               <div className="flex basis-1/2 flex-col">
-                <p className="font-serif text-xl tracking-wide uppercase [font-variant:small-caps] sm:text-2xl">
+                <p className="font-serif text-xl font-medium tracking-wide uppercase [font-variant:small-caps] sm:text-2xl">
                   Naples, Florida
                 </p>
                 <p className="text-lg font-thin tracking-wider text-gray-500 uppercase">

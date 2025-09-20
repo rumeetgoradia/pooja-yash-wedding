@@ -48,7 +48,7 @@ const Navbar: React.FC = () => {
         <div className="max-sm:hidden">
           <nav
             className={cn(
-              "decoration-primary font-serif font-light tracking-wider decoration-2 underline-offset-8",
+              "decoration-primary font-serif tracking-wider decoration-2 underline-offset-8",
               "flex gap-8 md:gap-12 md:text-lg",
             )}
           >

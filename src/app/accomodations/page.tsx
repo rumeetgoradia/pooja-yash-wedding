@@ -29,7 +29,9 @@ function InfoCard({
       {/* Icon and Title - Refined icon color */}
       <div className="flex items-center gap-4">
         <Icon className="size-8 text-gray-500" /> {/* Softer color */}
-        <h3 className="text-foreground mt-1 font-serif text-3xl">{title}</h3>
+        <h3 className="text-foreground mt-1 font-serif text-3xl font-semibold">
+          {title}
+        </h3>
       </div>
 
       {/* Description Text - Improved line height for readability */}

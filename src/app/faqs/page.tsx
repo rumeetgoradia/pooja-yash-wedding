@@ -154,7 +154,7 @@ function FaqList() {
               <span className="text-2xl" aria-hidden="true">
                 {faq.icon}
               </span>
-              <h3 className="text-lg font-medium text-gray-900">
+              <h3 className="text-lg font-semibold text-gray-900">
                 {faq.question}
               </h3>
             </div>
