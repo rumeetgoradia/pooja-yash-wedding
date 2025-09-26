@@ -20,8 +20,13 @@ export const Hero: React.FC<HeroProps> = ({
 }) => {
   return (
     <div className="bg-black">
-      <section className="relative flex h-[72vh] items-center overflow-hidden">
-        <div className="absolute top-0 left-0 z-10 h-[20%] w-full bg-gradient-to-b from-black to-transparent" />
+      <section className="relative flex h-[72vh] items-center overflow-hidden bg-black">
+        <div
+          className={cn(
+            "absolute top-0 left-0 z-10 h-[40%] w-full",
+            "bg-[linear-gradient(to_bottom,rgba(0,0,0,1)_0%,rgba(0,0,0,0.6)_20%,rgba(0,0,0,0.3)_40%,rgba(0,0,0,0.1)_60%,rgba(0,0,0,0)_100%)]",
+          )}
+        />
         <div className="transition-filter absolute inset-0 h-full w-full">
           <Image
             src={src}
