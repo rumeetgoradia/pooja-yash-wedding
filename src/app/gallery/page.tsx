@@ -7,6 +7,7 @@ import { galleryImages, type GalleryImage } from "~/lib/data/gallery-data";
 const HeroImage: HeroImageProps = {
   src: LandingImage,
   alt: "Gallery - Pooja & Yash",
+  className: "object-[70%] sm:object-[50%_20%]",
 };
 
 export default function GalleryPage() {
