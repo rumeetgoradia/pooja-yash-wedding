@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { PageLayout } from "~/components/layout/layout";
+import { Content } from "~/components/layout/content";
 import { type HeroImageProps } from "~/components/layout/hero";
 import LandingImage from "public/heros/gallery.jpg";
 import { galleryImages, type GalleryImage } from "~/lib/data/gallery-data";
@@ -12,7 +12,7 @@ const HeroImage: HeroImageProps = {
 
 export default function GalleryPage() {
   return (
-    <PageLayout heroImage={HeroImage}>
+    <Content heroImage={HeroImage}>
       <div className="columns-1 gap-8 md:columns-2">
         {galleryImages.map((image: GalleryImage) => (
           <div key={image.src} className="mb-8 break-inside-avoid">
@@ -28,6 +28,6 @@ export default function GalleryPage() {
           </div>
         ))}
       </div>
-    </PageLayout>
+    </Content>
   );
 }

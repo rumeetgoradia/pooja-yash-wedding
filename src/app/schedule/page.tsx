@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { PageLayout } from "~/components/layout/layout";
+import { Content } from "~/components/layout/content";
 import { type HeroImageProps } from "~/components/layout/hero";
 import LandingImage from "public/heros/schedule.jpg";
 import { Button } from "~/components/ui/button"; // Make sure this path is correct
@@ -115,7 +115,7 @@ function EventDaySection({
 // --- Main Schedule Page Component ---
 const SchedulePage = () => {
   return (
-    <PageLayout heroImage={HeroImage}>
+    <Content heroImage={HeroImage}>
       <div className="flex flex-col gap-20 sm:gap-32">
         {SCHEDULE_DATA.map((day, index) => (
           <EventDaySection
@@ -125,7 +125,7 @@ const SchedulePage = () => {
           />
         ))}
       </div>
-    </PageLayout>
+    </Content>
   );
 };
 

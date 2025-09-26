@@ -29,13 +29,7 @@ const serif = Cormorant_Garamond({
   variable: "--font-custom-serif",
 });
 
-const script = Lavishly_Yours({
-  subsets: ["latin"],
-  weight: "400",
-  variable: "--font-custom-script",
-});
-
-const script2 = localFont({
+const script = localFont({
   src: "../../public/fonts/CitadelScriptStd.otf",
   variable: "--font-custom-script",
   weight: "400",
@@ -47,11 +41,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${sans.variable} ${serif.variable} ${script2.variable}`}
+      className={`${sans.variable} ${serif.variable} ${script.variable}`}
     >
       <body>
         <TRPCReactProvider>
-          {/* <Background /> */}
           <Navbar />
           {children}
         </TRPCReactProvider>

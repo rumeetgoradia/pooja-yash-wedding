@@ -1,7 +1,7 @@
 import { BusFront, Hotel, Plane } from "lucide-react";
 import LandingImage from "public/heros/accomodations.jpg";
 import { Hero, type HeroImageProps } from "~/components/layout/hero";
-import { PageLayout } from "~/components/layout/layout";
+import { Content } from "~/components/layout/content";
 import { Button } from "~/components/ui/button";
 
 const HeroImage: HeroImageProps = {
@@ -59,7 +59,7 @@ const Intro = (
 
 export default function Accommodations() {
   return (
-    <PageLayout heroImage={HeroImage} introSection={Intro}>
+    <Content heroImage={HeroImage} introSection={Intro}>
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
         <InfoCard
           icon={Hotel}
@@ -101,6 +101,6 @@ export default function Accommodations() {
           </p>
         </InfoCard>
       </div>
-    </PageLayout>
+    </Content>
   );
 }

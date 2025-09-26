@@ -2,7 +2,7 @@ import Logo from "~/components/logo";
 import DisplayImage from "public/home/piano.jpg";
 import LandingImage from "public/heros/home.png";
 import Image from "next/image";
-import { PageLayout } from "~/components/layout/layout";
+import { Content } from "~/components/layout/content";
 import { type HeroImageProps } from "~/components/layout/hero";
 
 const HeroImage: HeroImageProps = {
@@ -13,7 +13,7 @@ const HeroImage: HeroImageProps = {
 
 export default function Home() {
   return (
-    <PageLayout heroImage={HeroImage}>
+    <Content heroImage={HeroImage}>
       {/* UPDATED: Using responsive gaps for better balance on all screen sizes */}
       <div className="grid grid-cols-1 items-center gap-y-12 lg:grid-cols-2 lg:gap-x-20 lg:gap-y-16">
         <div className="flex flex-col">
@@ -67,6 +67,6 @@ export default function Home() {
           />
         </div>
       </div>
-    </PageLayout>
+    </Content>
   );
 }

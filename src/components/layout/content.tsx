@@ -8,7 +8,7 @@ interface PageLayoutProps {
   children: React.ReactNode;
 }
 
-export function PageLayout({
+export function Content({
   heroImage,
   introSection,
   children,

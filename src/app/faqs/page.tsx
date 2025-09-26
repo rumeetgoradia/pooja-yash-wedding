@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import LandingImage from "public/heros/faqs.jpeg";
-import { PageLayout } from "~/components/layout/layout";
+import { Content } from "~/components/layout/content";
 import { type HeroImageProps } from "~/components/layout/hero";
 import {
   Collapsible,
@@ -187,8 +187,8 @@ const HeroImage: HeroImageProps = {
 
 export default function FaqsPage() {
   return (
-    <PageLayout heroImage={HeroImage}>
+    <Content heroImage={HeroImage}>
       <FaqList />
-    </PageLayout>
+    </Content>
   );
 }
