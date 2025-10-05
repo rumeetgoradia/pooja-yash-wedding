@@ -105,7 +105,7 @@ export const SCHEDULE_DATA: ScheduleDay[] = [
                 location: "The Ritz Carlton Ballroom",
                 description: (
                     <>
-                        <i>&quot;I am honored to invite you all to the most unforgettable sangeet, celebrating the beautiful couple. Join us for a night of beats and good eats for the Sangeet Night- Hope to see all of you with your love, laughter, AND don&apos;t forget to bring your best moves.&quot; - Shama</i>
+                        <i>&quot;I am honored to invite you all to the most unforgettable sangeet, celebrating the beautiful couple. Join us for a night of beats and good eats for the Sangeet Night - Hope to see all of you with your love, laughter, AND don&apos;t forget to bring your best moves.&quot; - Shama</i>
                     </>
                 ),
                 dressCode: {
