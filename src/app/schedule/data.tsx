@@ -1,4 +1,3 @@
-import type { StaticImageData } from "next/image";
 import { type EventItem, type DayMeta } from "./types";
 import WelcomeImage from "public/schedule/welcome.jpg";
 import SangeetImage from "public/schedule/sangeet.jpg";
@@ -25,7 +24,6 @@ export const EVENTS: EventItem[] = [
             primary: "Linen or Resort wear",
             secondary: "Effortless elegance meets festive flair. Breezy kurta or flowy dress, come ready to celebrate!",
         },
-        tags: [],
     },
     {
         id: "grah-shanti-ganesh-puja",
@@ -40,7 +38,6 @@ export const EVENTS: EventItem[] = [
             primary: "Indian wear",
             secondary: "Traditional attire that's light, breezy, and Florida-friendly.",
         },
-        tags: ["puja"],
     },
     {
         id: "haldi-celebration",
@@ -54,7 +51,6 @@ export const EVENTS: EventItem[] = [
         dressCode: {
             primary: "Indian wear",
         },
-        tags: ["haldi", "beach"],
     },
     {
         id: "sangeet-night",
@@ -69,7 +65,6 @@ export const EVENTS: EventItem[] = [
             primary: "Festive Indian attire",
             secondary: "Bold and sparkling Indian wear to match your bold Sangeet moves.",
         },
-        tags: ["sangeet"],
     },
     {
         id: "jaan-aagman",
@@ -83,7 +78,6 @@ export const EVENTS: EventItem[] = [
             primary: "Heritage Indian",
             secondary: "Vibrant, timeless, and steeped in culture. Heirloom embroidery, rich silks, bandhani, brocade, or mirror work.",
         },
-        tags: ["ceremony"],
     },
     {
         id: "wedding-ceremony-lunch",
@@ -97,7 +91,6 @@ export const EVENTS: EventItem[] = [
         dressCode: {
             primary: "Heritage Indian",
         },
-        tags: ["ceremony"],
     },
     {
         id: "cocktail-hour",
@@ -112,7 +105,6 @@ export const EVENTS: EventItem[] = [
             primary: "Formal Indian or Western attire",
             secondary: "Classic, graceful, and polished — rich tones, elegant textures, and a hint of celebration in every detail.",
         },
-        tags: ["reception"],
     },
     {
         id: "reception",
@@ -126,7 +118,6 @@ export const EVENTS: EventItem[] = [
         dressCode: {
             primary: "Formal Indian or Western attire",
         },
-        tags: ["reception"],
     },
     {
         id: "farewell-brunch",
@@ -140,7 +131,6 @@ export const EVENTS: EventItem[] = [
         dressCode: {
             primary: "Casual/Resort wear",
         },
-        tags: [],
     },
     {
         id: "checkout",
@@ -153,6 +143,5 @@ export const EVENTS: EventItem[] = [
         dressCode: {
             primary: "Travel attire",
         },
-        tags: [],
     },
 ];

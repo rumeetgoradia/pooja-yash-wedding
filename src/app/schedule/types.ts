@@ -14,18 +14,17 @@ export type Venue = {
 };
 
 export type EventItem = {
-    id: string;                    // stable key
-    title: string;                 // "Sangeet Night"
-    start: string;                 // ISO: "2026-06-19T18:00:00-04:00"
-    end?: string;                  // ISO (optional)
+    id: string;
+    title: string;
+    start: string;
+    end?: string;
     venue: Venue;
     description?: React.ReactNode;
     dressCode?: DressCode;
-    tags?: Array<'outdoor' | 'beach' | 'family-only' | 'shuttle' | 'reception' | 'ceremony' | 'haldi' | 'puja' | 'sangeet'>;
 };
 
 export type DayMeta = {
-    date: string;                  // "2026-06-19" (YYYY-MM-DD)
+    date: string;
     hero: { src: StaticImageData; alt: string };
-    vibe?: string;                 // "Blessings & Haldi by the Sea"
+    vibe?: string;
 };
