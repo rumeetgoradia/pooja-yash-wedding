@@ -46,7 +46,7 @@ export default function Home() {
                                     June 18 &mdash; June 20
                                 </p>
                             </div>
-                            <div className="flex basis-1/2 flex-col pt-[6px]">
+                            <div className="flex basis-1/2 flex-col">
                                 <p className="font-serif text-xl font-medium tracking-wide uppercase [font-variant:small-caps] sm:text-2xl">
                                     Naples, Florida
                                 </p>
