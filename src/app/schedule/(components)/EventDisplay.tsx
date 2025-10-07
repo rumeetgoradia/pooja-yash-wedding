@@ -6,7 +6,7 @@ export default function EventDisplay({ event }: { event: EventItem }) {
         <li className="relative border-zinc-300/40 last:pb-0 flex flex-col gap-4">
 
             <div className="flex flex-col gap-1">
-                <h3 className="text-2xl md:text-4xl tracking-wide text-zinc-800">
+                <h3 className="text-2xl md:text-3xl text-zinc-800">
                     {event.title}
                 </h3>
                 <time className="text-sm md:text-base uppercase tracking-widest text-zinc-500">

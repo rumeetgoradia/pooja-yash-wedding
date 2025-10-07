@@ -4,14 +4,11 @@ import { type Metadata } from "next";
 import {
     Bodoni_Moda,
     Geist,
-    Lavishly_Yours,
-    Newsreader,
 } from "next/font/google";
 import localFont from "next/font/local";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import Navbar from "~/components/layout/navbar";
-import Background from "~/components/layout/background";
 
 export const metadata: Metadata = {
     title: "Pooja & Yash",

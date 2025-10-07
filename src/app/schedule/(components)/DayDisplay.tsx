@@ -31,11 +31,11 @@ export default function DayDisplay({ dayISO, hero, vibe, events, flip }: Props) 
                     )}
                 >
                     <header className="mb-4 md:mb-6">
-                        <h2 className="text-3xl md:text-5xl font-semibold leading-tight">
+                        <h2 className="text-3xl md:text-4xl font-semibold leading-tight">
                             {formatDayHeader(dayISO)}
                         </h2>
                         {vibe && (
-                            <p className="mt-1 font-serif text-xl md:text-3xl [font-variant:small-caps]  text-zinc-700 ">
+                            <p className="mt-1 font-serif text-xl md:text-2xl font-light tracking-wider [font-variant:small-caps]  text-zinc-700 ">
                                 {vibe}
                             </p>
                         )}
@@ -54,7 +54,7 @@ export default function DayDisplay({ dayISO, hero, vibe, events, flip }: Props) 
 
                 </aside>
 
-                <div className={["md:col-span-7 md:pt-28", flip ? "md:order-1" : "md:order-2"].join(" ")}>
+                <div className={["md:col-span-7 md:pt-26", flip ? "md:order-1" : "md:order-2"].join(" ")}>
                     <ol className="space-y-4 md:space-y-5 max-w-[66ch]">
                         {events.map((e, i) => (
                             <div key={e.id} className=''>
