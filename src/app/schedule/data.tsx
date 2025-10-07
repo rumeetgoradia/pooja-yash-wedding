@@ -2,12 +2,13 @@ import { type EventItem, type DayMeta } from "./types";
 import WelcomeImage from "public/schedule/welcome.jpg";
 import SangeetImage from "public/schedule/sangeet.jpg";
 import WeddingImage from "public/schedule/wedding.jpg";
+import GoodbyeImage from 'public/schedule/goodbye.jpg';
 
 export const DAY_META: Record<string, DayMeta> = {
     "2026-06-18": { date: "2026-06-18", hero: { src: WelcomeImage, alt: "June 18" }, vibe: "A Coastal Kickoff to Love" },
     "2026-06-19": { date: "2026-06-19", hero: { src: WeddingImage, alt: "June 19" }, vibe: "Blessings & Haldi by the Sea" },
     "2026-06-20": { date: "2026-06-20", hero: { src: SangeetImage, alt: "June 20" }, vibe: "Lagna & Reception" },
-    "2026-06-21": { date: "2026-06-21", hero: { src: WelcomeImage, alt: "June 21" }, vibe: "A Farewell to Remember" },
+    "2026-06-21": { date: "2026-06-21", hero: { src: GoodbyeImage, alt: "June 21" }, vibe: "A Farewell to Remember" },
 };
 
 export const EVENTS: EventItem[] = [
@@ -136,7 +137,7 @@ export const EVENTS: EventItem[] = [
         id: "checkout",
         title: "Checkout",
         start: "2026-06-21T11:00:00-04:00",
-        venue: { name: "The Beach House" },
+        venue: { name: "Hotel Lobby" },
         description: <>
             A bittersweet moment until we meet again, see ya!
         </>,
