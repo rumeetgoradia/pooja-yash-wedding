@@ -30,6 +30,10 @@ export default function EventDisplay({ event }: { event: EventItem }) {
 
                 </div>
             )}
+
+            {event.notes && (
+                <>{event.notes}</>
+            )}
         </li>
     );
 }

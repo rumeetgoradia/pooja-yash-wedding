@@ -144,5 +144,6 @@ export const EVENTS: EventItem[] = [
         dressCode: {
             primary: "Travel attire",
         },
+        notes: <><div className='text-center text-2xl mt-4 md:mt-6'>। જય શ્રીકૃષ્ણ, આવજો ।</div></>
     },
 ];

@@ -21,6 +21,7 @@ export type EventItem = {
     venue: Venue;
     description?: React.ReactNode;
     dressCode?: DressCode;
+    notes?: React.ReactNode;
 };
 
 export type DayMeta = {
