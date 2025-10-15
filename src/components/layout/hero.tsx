@@ -19,14 +19,14 @@ export const Hero: React.FC<HeroProps> = ({
     children,
 }) => {
     return (
-        <div className="bg-black">
-            <section className="relative flex h-[72vh] items-center overflow-hidden bg-black">
-                <div
+        <div className="bg-primary">
+            <section className="relative flex h-[100vh] items-center overflow-hidden bg-primary">
+                {/* <div
                     className={cn(
                         "absolute top-0 left-0 z-10 h-[40%] w-full",
                         "bg-[linear-gradient(to_bottom,rgba(0,0,0,1)_0%,rgba(0,0,0,0.6)_20%,rgba(0,0,0,0.3)_40%,rgba(0,0,0,0.1)_60%,rgba(0,0,0,0)_100%)]",
                     )}
-                />
+                /> */}
                 <div className="transition-filter absolute inset-0 h-full w-full">
                     <Image
                         src={src}
@@ -34,7 +34,7 @@ export const Hero: React.FC<HeroProps> = ({
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         objectFit="cover"
-                        quality={85} // Adjusted for a better balance
+                        quality={85}
                         priority
                         placeholder="blur"
                         className={cn(className)}

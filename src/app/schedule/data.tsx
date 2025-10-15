@@ -6,7 +6,7 @@ import GoodbyeImage from 'public/schedule/goodbye.jpg';
 
 export const DAY_META: Record<string, DayMeta> = {
     "2026-06-18": { date: "2026-06-18", hero: { src: WelcomeImage, alt: "June 18" }, vibe: "A Coastal Kickoff to Love" },
-    "2026-06-19": { date: "2026-06-19", hero: { src: WeddingImage, alt: "June 19" }, vibe: "Blessings & Haldi by the Sea" },
+    "2026-06-19": { date: "2026-06-19", hero: { src: WeddingImage, alt: "June 19" }, vibe: "Haldi & Sangeet by the Sea" },
     "2026-06-20": { date: "2026-06-20", hero: { src: SangeetImage, alt: "June 20" }, vibe: "Lagna & Reception" },
     "2026-06-21": { date: "2026-06-21", hero: { src: GoodbyeImage, alt: "June 21" }, vibe: "A Farewell to Remember" },
 };

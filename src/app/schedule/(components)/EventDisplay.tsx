@@ -15,11 +15,11 @@ export default function EventDisplay({ event }: { event: EventItem }) {
                 </time>
             </div>
 
-            {event.description && (
+            {/* {event.description && (
                 <p className="text-lg md:text-xl text-zinc-700/90 font-light">
                     {event.description}
                 </p>
-            )}
+            )} */}
 
             {event.dressCode && (
                 <div className=" text-zinc-500 flex flex-col">
