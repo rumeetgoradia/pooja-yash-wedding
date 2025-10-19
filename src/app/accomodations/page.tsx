@@ -68,7 +68,7 @@ export default function Accommodations() {
                     ctaHref="https://book.passkey.com/event/51089211/owner/49699364/home"
                 >
                     <p>
-                        Events will be taking place at The Ritz-Carlton Beach Resort, Naples FL from June 18 to June 21, 2026 but the room block is available from 17 June to 22 June, 2026.
+                        Events will be taking place at The Ritz-Carlton Beach Resort, Naples FL from June 18 to June 21, 2026 but the room block is available from June 17 to June 22, 2026.
                     </p>
                 </InfoCard>
 
