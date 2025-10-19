@@ -48,7 +48,7 @@ function FaqList() {
 const HeroImage: HeroImageProps = {
     src: LandingImage,
     alt: "Frequently Asked Questions - Pooja & Yash",
-    className: "max-sm:object-center",
+    className: "max-sm:object-[60%]",
 };
 
 export default function FaqsPage() {

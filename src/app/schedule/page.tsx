@@ -7,8 +7,8 @@ import { Content } from "~/components/layout/content";
 
 const HeroImage: HeroImageProps = {
     src: LandingImage,
-    alt: "Pooja & Yash",
-    className: "max-sm:object-[43%]",
+    alt: "Schedule - Pooja & Yash",
+    className: "max-sm:object-[58%]",
 };
 
 export default function SchedulePage() {
