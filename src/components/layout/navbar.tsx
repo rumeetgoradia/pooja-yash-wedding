@@ -48,7 +48,7 @@ const Navbar: React.FC = () => {
                 <div className="max-sm:hidden">
                     <nav
                         className={cn(
-                            "decoration-white font-medium font-serif tracking-wider decoration-2 underline-offset-8",
+                            "decoration-primary-foreground font-medium font-serif tracking-wider decoration-2 underline-offset-8",
                             "flex gap-8 md:gap-12 md:text-lg",
                         )}
                     >
@@ -56,7 +56,7 @@ const Navbar: React.FC = () => {
                             <Link
                                 href={route.path}
                                 title={route.title}
-                                className={cn(
+                                className={cn("text-primary-foreground",
                                     "hover:underline cursor-pointer transition-[color]",
                                     pathName === route.path && "underline",
                                 )}
