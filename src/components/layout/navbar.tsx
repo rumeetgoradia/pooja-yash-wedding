@@ -80,7 +80,7 @@ const Navbar: React.FC = () => {
                                     Pooja & Yash
                                 </div>
                                 <div className="font-sans font-light tracking-wider uppercase">
-                                    June 21, 2026
+                                    June 20, 2026
                                 </div>
                                 <div className="font-sans font-light tracking-wider uppercase">
                                     Naples, Florida

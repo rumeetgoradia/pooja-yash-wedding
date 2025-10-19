@@ -34,7 +34,7 @@ export const Hero: React.FC<HeroProps> = ({
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         objectFit="cover"
-                        quality={85}
+                        quality={100}
                         priority
                         placeholder="blur"
                         className={cn(className)}
