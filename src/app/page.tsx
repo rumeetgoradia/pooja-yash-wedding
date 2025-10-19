@@ -14,7 +14,6 @@ const HeroImage: HeroImageProps = {
 export default function Home() {
     return (
         <Content heroImage={HeroImage}>
-            {/* UPDATED: Using responsive gaps for better balance on all screen sizes */}
             <div className="grid grid-cols-1 items-center gap-y-12 lg:grid-cols-2 lg:gap-x-20 lg:gap-y-16">
                 <div className="flex flex-col">
                     <div className="flex items-center justify-center lg:justify-start">

@@ -19,7 +19,7 @@ export default function DayDisplay({ dayISO, hero, vibe, events, flip }: Props) 
     const stickyTop = "top-24";
 
     return (
-        <section id={dayISO} className="py-12 md:py-20">
+        <section id={dayISO}>
             <div className="grid items-start gap-8 md:gap-10 md:grid-cols-12">
                 <aside
                     className={cn(

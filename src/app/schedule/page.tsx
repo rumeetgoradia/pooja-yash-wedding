@@ -17,20 +17,22 @@ export default function SchedulePage() {
 
     return (
         <Content heroImage={HeroImage}>
-            {days.map((k, idx) => {
-                const meta = DAY_META[k];
-                const events = grouped.get(k)!;
-                return (
-                    <DayDisplay
-                        key={k}
-                        dayISO={k}
-                        hero={meta!.hero}
-                        vibe={meta!.vibe}
-                        events={events}
-                        flip={idx % 2 === 1}
-                    />
-                );
-            })}
+            <div className='flex flex-col gap-y-12 md:gap-y-20'>
+                {days.map((k, idx) => {
+                    const meta = DAY_META[k];
+                    const events = grouped.get(k)!;
+                    return (
+                        <DayDisplay
+                            key={k}
+                            dayISO={k}
+                            hero={meta!.hero}
+                            vibe={meta!.vibe}
+                            events={events}
+                            flip={idx % 2 === 1}
+                        />
+                    );
+                })}
+            </div>
         </Content>
     );
 }
