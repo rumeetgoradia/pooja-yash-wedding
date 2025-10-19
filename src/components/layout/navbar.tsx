@@ -74,7 +74,7 @@ const Navbar: React.FC = () => {
                                 <Menu className="size-6" />
                             </Button>
                         </SheetTrigger>
-                        <SheetContent className="flex h-[100vh] flex-col gap-8 px-8 pt-18 pb-10">
+                        <SheetContent className="flex h-[100%] flex-col gap-8 px-8 pt-18 pb-10">
                             <SheetTitle className="flex w-full grow-0 flex-col">
                                 <div className="font-serif text-xl tracking-wide [font-variant:small-caps]">
                                     Pooja & Yash
