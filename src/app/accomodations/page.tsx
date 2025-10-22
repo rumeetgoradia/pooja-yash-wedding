@@ -1,4 +1,4 @@
-import { BusFront, Hotel, Plane } from "lucide-react";
+import { BusFront, Hotel, Map, Plane } from "lucide-react";
 import LandingImage from "public/heros/accomodations.jpg";
 import { type HeroImageProps } from "~/components/layout/hero";
 import { Content } from "~/components/layout/content";
@@ -73,15 +73,13 @@ export default function Accommodations() {
                 </InfoCard>
 
                 <InfoCard
-                    icon={BusFront}
-                    title="Shuttle"
-                    ctaText="View Schedule"
-                    ctaHref="/schedule"
+                    icon={Map}
+                    title="Hotel Map"
+                    ctaText="View Map"
+                    ctaHref="https://ipoolside-media.s3.amazonaws.com/site/ritzcarltonnaples/images/attachment/RSWRZ_Resort_Map_2024.pdf"
                 >
                     <p>
-                        Complimentary shuttles will be provided from the hotel to all
-                        wedding events. Please refer to the schedule for pickup times and
-                        locations.
+                        Please refer to the hotel map for event locations and the variety of amenities available at the resort.
                     </p>
                 </InfoCard>
 
