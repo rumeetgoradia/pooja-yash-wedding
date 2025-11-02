@@ -4,8 +4,8 @@ import { WEDDING_EVENTS } from "~/lib/data/rsvp-events";
 import type { Guest, Party, RsvpResponse } from "~/types/rsvp";
 
 const getSheets = () => {
-    const serviceAccountEmail = env.GOOGLE_SERVICE_ACCOUNT_EMAIL as string;
-    const privateKey = env.GOOGLE_PRIVATE_KEY as string;
+    const serviceAccountEmail = env.GOOGLE_SERVICE_ACCOUNT_EMAIL
+    const privateKey = env.GOOGLE_PRIVATE_KEY
 
     if (!serviceAccountEmail || !privateKey) {
         throw new Error("Missing Google Sheets credentials");
@@ -46,7 +46,7 @@ export class GoogleSheetsService {
     private sheetId: string;
 
     constructor() {
-        const sheetId = env.GOOGLE_SHEETS_ID as string
+        const sheetId = env.GOOGLE_SHEETS_ID
         if (!sheetId) {
             throw new Error("Missing Google Sheets ID");
         }
