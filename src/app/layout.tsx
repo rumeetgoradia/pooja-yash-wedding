@@ -9,6 +9,7 @@ import localFont from "next/font/local";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import Navbar from "~/components/layout/navbar";
+import { GuestProvider } from "~/contexts/guest-context";
 
 export const metadata: Metadata = {
     title: "Pooja & Yash",
@@ -42,8 +43,10 @@ export default function RootLayout({
         >
             <body>
                 <TRPCReactProvider>
-                    <Navbar />
-                    {children}
+                    <GuestProvider>
+                        <Navbar />
+                        {children}
+                    </GuestProvider>
                 </TRPCReactProvider>
             </body>
         </html>

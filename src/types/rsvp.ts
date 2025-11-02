@@ -1,4 +1,4 @@
-export type RsvpResponse = "Attending" | "Not Attending" | null;
+export type RsvpResponse = boolean | null;
 
 export interface Guest {
     firstName: string;

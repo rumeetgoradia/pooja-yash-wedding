@@ -74,6 +74,47 @@ public-hoist-pattern[]=*prettier*
 
 --- END FILE: README.md ---
 
+--- START FILE: RSVPs - Guests.csv ---
+First Name,Last Name,Party,Phone Number,Email
+Ashok,Antala,Ashok Antala & Family,917-572-7664,
+Rachana,Antala,Ashok Antala & Family,201-606-5758,
+Shama,Antala,Ashok Antala & Family,732-668-4817,
+Pooja,Antala,Ashok Antala & Family,732-668-1424,
+Samir,Patel,"Sonal, Samir Patel & Family",732-895-1878,
+Sonal,Patel,"Sonal, Samir Patel & Family",,
+Radhika,Patel,"Sonal, Samir Patel & Family",,
+Shivam,Patel,"Sonal, Samir Patel & Family",,
+Anuj,Patel,"Sonal, Samir Patel & Family",,
+Nirav,Patel,"Bhavi, Nirav Patel & Family",813-380-5092,
+Bhavi,Patel,"Bhavi, Nirav Patel & Family",,
+Savita,Patel,"Bhavi, Nirav Patel & Family",,
+Shloke,Patel,"Bhavi, Nirav Patel & Family",,
+Swara,Patel,"Bhavi, Nirav Patel & Family",,
+Vinod,Karsalia,"Manjulamami, Vinumama Karsalia & Family",610-764-8794,
+Manjula,Karsalia,"Manjulamami, Vinumama Karsalia & Family",,
+LiliBa,Karsalia,"Manjulamami, Vinumama Karsalia & Family",,
+Mehul,Patel,"Shilpaben, Mehulbhai Patel & Family",214-649-5360,
+Shilpa,Patel,"Shilpaben, Mehulbhai Patel & Family",,
+Pooja,Patel,"Shilpaben, Mehulbhai Patel & Family",,
+Aman,Patel,"Shilpaben, Mehulbhai Patel & Family",,
+Jiten,Parikh,"Bhavna, Jiten Parikh & Family",973-413-5186,
+Bhavna,Parikh,"Bhavna, Jiten Parikh & Family",,
+Julie,Parikh,"Bhavna, Jiten Parikh & Family",,
+Alpesh,Patel,"Krupa, Alpesh Patel & Family",201-888-5445,
+Krupa,Patel,"Krupa, Alpesh Patel & Family",,
+Tashvi,Patel,"Krupa, Alpesh Patel & Family",,
+Sia,Patel,"Krupa, Alpesh Patel & Family",,
+Manu,Patel,"Krupa, Alpesh Patel & Family",,
+Shirish,Patel,Sonalben & Shirishbhai Patel,732-771-4885,
+Sonal,Patel,Sonalben & Shirishbhai Patel,,
+Shivanshi,Patel,Sonalben & Shirishbhai Patel,,
+Chirag,Shah,Dipti & Chirag Shah,908-240-4961,
+Dipti,Shah,Dipti & Chirag Shah,,
+Parendu,Parikh,Shilpa & Parendu Parikh,908-304-7941,
+Shilpa,Parikh,Shilpa & Parendu Parikh,,
+Dylan,Patel,Dylan Patel,609-576-1448,
+--- END FILE: RSVPs - Guests.csv ---
+
 --- START FILE: components.json ---
 {
   "$schema": "https://ui.shadcn.com/schema.json",
@@ -195,6 +236,7 @@ export default config;
         "@trpc/server": "^11.0.0",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
+        "googleapis": "^164.1.0",
         "lucide-react": "^0.542.0",
         "next": "^15.2.3",
         "react": "^19.0.0",
@@ -1027,6 +1069,451 @@ const BorderedLogo = ({ className }: { className: string }) => (
 
 )
 --- END FILE: src/app/page.tsx ---
+
+--- START FILE: src/app/rsvp/events/page.tsx ---
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "~/components/ui/button";
+import { api } from "~/trpc/react";
+import { WEDDING_EVENTS } from "~/lib/data/rsvp-events";
+import type { Party, RsvpResponse } from "~/types/rsvp";
+import { cn } from "~/lib/utils";
+
+export default function EventsPage() {
+    const router = useRouter();
+    const [party, setParty] = useState<Party | null>(null);
+    const [responses, setResponses] = useState<
+        Record<string, Record<string, RsvpResponse>>
+    >({});
+    const [showSuccess, setShowSuccess] = useState(false);
+
+    useEffect(() => {
+        const storedParty = sessionStorage.getItem("rsvp_party");
+
+        if (!storedParty) {
+            router.push("/rsvp");
+            return;
+        }
+
+        const parsedParty = JSON.parse(storedParty) as Party;
+        setParty(parsedParty);
+
+        const initialResponses: Record<string, Record<string, RsvpResponse>> = {};
+        parsedParty.members.forEach((member) => {
+            const guestKey = `${member.firstName}-${member.lastName}`;
+            initialResponses[guestKey] = { ...member.rsvps };
+        });
+        setResponses(initialResponses);
+    }, [router]);
+
+    const submitRsvpsMutation = api.rsvp.submitRsvps.useMutation({
+        onSuccess: () => {
+            setShowSuccess(true);
+            sessionStorage.removeItem("rsvp_party");
+        },
+    });
+
+    const handleResponseChange = (
+        guestKey: string,
+        eventColumnName: string,
+        response: RsvpResponse,
+    ) => {
+        setResponses((prev) => ({
+            ...prev,
+            [guestKey]: {
+                ...prev[guestKey],
+                [eventColumnName]: response,
+            },
+        }));
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!party) return;
+
+        const submissionResponses = party.members.flatMap((member) => {
+            const guestKey = `${member.firstName}-${member.lastName}`;
+            const guestResponses = responses[guestKey] ?? {};
+
+            return WEDDING_EVENTS.map((event) => ({
+                firstName: member.firstName,
+                lastName: member.lastName,
+                eventColumnName: event.columnName,
+                response: guestResponses[event.columnName] ?? null,
+            }));
+        });
+
+        submitRsvpsMutation.mutate({
+            partyName: party.name,
+            responses: submissionResponses,
+        });
+    };
+
+    if (!party) {
+        return null;
+    }
+
+    if (showSuccess) {
+        return (
+            <div className="min-h-screen bg-gradient-to-b from-neutral-50 to-neutral-100 px-4 py-16">
+                <div className="mx-auto max-w-2xl text-center">
+                    <div className="rounded-lg bg-white p-8 shadow-md">
+                        <div className="mb-4 text-6xl">✓</div>
+                        <h1 className="mb-4 font-serif text-4xl font-light text-neutral-900">
+                            Thank You!
+                        </h1>
+                        <p className="mb-6 text-neutral-600">
+                            Your RSVPs have been submitted successfully. We look forward to
+                            celebrating with you!
+                        </p>
+                        <Button onClick={() => router.push("/")}>
+                            Return to Home
+                        </Button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div className="min-h-screen bg-gradient-to-b from-neutral-50 to-neutral-100 px-4 py-16">
+            <div className="mx-auto max-w-3xl">
+                <div className="mb-8 text-center">
+                    <h1 className="font-serif text-4xl font-light text-neutral-900">
+                        RSVP for {party.name}
+                    </h1>
+                    <p className="mt-2 text-neutral-600">
+                        Please let us know who will be attending each event.
+                    </p>
+                </div>
+
+                <form onSubmit={handleSubmit} className="space-y-8">
+                    {WEDDING_EVENTS.map((event) => (
+                        <div
+                            key={event.id}
+                            className="rounded-lg bg-white p-6 shadow-md"
+                        >
+                            <div className="mb-4 border-b border-neutral-200 pb-4">
+                                <h2 className="font-serif text-2xl font-medium text-neutral-900">
+                                    {event.name}
+                                </h2>
+                                <p className="text-sm text-neutral-600">
+                                    {event.date} at {event.time}
+                                </p>
+                            </div>
+
+                            <div className="space-y-4">
+                                {party.members.map((member) => {
+                                    const guestKey = `${member.firstName}-${member.lastName}`;
+                                    const currentResponse =
+                                        responses[guestKey]?.[event.columnName];
+
+                                    return (
+                                        <div
+                                            key={guestKey}
+                                            className="flex items-center justify-between border-b border-neutral-100 pb-3 last:border-0"
+                                        >
+                                            <span className="font-medium text-neutral-900">
+                                                {member.firstName} {member.lastName}
+                                            </span>
+
+                                            <div className="flex gap-2">
+                                                <button
+                                                    type="button"
+                                                    onClick={() =>
+                                                        handleResponseChange(
+                                                            guestKey,
+                                                            event.columnName,
+                                                            true,
+                                                        )
+                                                    }
+                                                    className={cn(
+                                                        "rounded-md px-4 py-2 text-sm font-medium transition-colors",
+                                                        currentResponse === true
+                                                            ? "bg-green-600 text-white"
+                                                            : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
+                                                    )}
+                                                >
+                                                    Attending
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() =>
+                                                        handleResponseChange(
+                                                            guestKey,
+                                                            event.columnName,
+                                                            false,
+                                                        )
+                                                    }
+                                                    className={cn(
+                                                        "rounded-md px-4 py-2 text-sm font-medium transition-colors",
+                                                        currentResponse === false
+                                                            ? "bg-red-600 text-white"
+                                                            : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
+                                                    )}
+                                                >
+                                                    Not Attending
+                                                </button>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    ))}
+
+                    {submitRsvpsMutation.error && (
+                        <div className="rounded-md bg-red-50 p-4 text-sm text-red-800">
+                            {submitRsvpsMutation.error.message}
+                        </div>
+                    )}
+
+                    <div className="flex gap-4">
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => router.push("/rsvp")}
+                            className="flex-1"
+                        >
+                            Start Over
+                        </Button>
+                        <Button
+                            type="submit"
+                            className="flex-1"
+                            disabled={submitRsvpsMutation.isPending}
+                        >
+                            {submitRsvpsMutation.isPending
+                                ? "Submitting..."
+                                : "Submit RSVPs"}
+                        </Button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+}
+--- END FILE: src/app/rsvp/events/page.tsx ---
+
+--- START FILE: src/app/rsvp/page.tsx ---
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "~/components/ui/button";
+import { api } from "~/trpc/react";
+
+export default function RsvpPage() {
+    const router = useRouter();
+    const [name, setName] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+
+    const authenticateMutation = api.rsvp.authenticate.useMutation({
+        onSuccess: (data) => {
+            if (data.needsPartySelection) {
+                sessionStorage.setItem("rsvp_parties", JSON.stringify(data.parties));
+                sessionStorage.setItem("rsvp_name", name);
+                router.push("/rsvp/select-party");
+            } else if (data.party) {
+                sessionStorage.setItem("rsvp_party", JSON.stringify(data.party));
+                router.push("/rsvp/events");
+            }
+        },
+        onError: (error) => {
+            setError(error.message);
+        },
+    });
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        setError("");
+        authenticateMutation.mutate({ name, password });
+    };
+
+    return (
+        <div className="min-h-screen bg-gradient-to-b from-neutral-50 to-neutral-100 px-4 py-16">
+            <div className="mx-auto max-w-md">
+                <div className="mb-8 text-center">
+                    <h1 className="font-serif text-4xl font-light text-neutral-900">
+                        RSVP
+                    </h1>
+                    <p className="mt-2 text-neutral-600">
+                        Please enter your name and the password provided in your invitation.
+                    </p>
+                </div>
+
+                <div className="rounded-lg bg-white p-8 shadow-md">
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        <div>
+                            <label
+                                htmlFor="name"
+                                className="block text-sm font-medium text-neutral-700"
+                            >
+                                Your Name
+                            </label>
+                            <input
+                                type="text"
+                                id="name"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                className="mt-1 block w-full rounded-md border border-neutral-300 px-3 py-2 shadow-sm focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-500"
+                                placeholder="First Last"
+                                required
+                            />
+                        </div>
+
+                        <div>
+                            <label
+                                htmlFor="password"
+                                className="block text-sm font-medium text-neutral-700"
+                            >
+                                Password
+                            </label>
+                            <input
+                                type="password"
+                                id="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="mt-1 block w-full rounded-md border border-neutral-300 px-3 py-2 shadow-sm focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-500"
+                                required
+                            />
+                        </div>
+
+                        {error && (
+                            <div className="rounded-md bg-red-50 p-3 text-sm text-red-800">
+                                {error}
+                            </div>
+                        )}
+
+                        <Button
+                            type="submit"
+                            className="w-full"
+                            disabled={authenticateMutation.isPending}
+                        >
+                            {authenticateMutation.isPending ? "Checking..." : "Continue"}
+                        </Button>
+                    </form>
+                </div>
+
+                <div className="mt-6 text-center text-sm text-neutral-600">
+                    <p>
+                        Having trouble? Please contact Pooja or Yash for assistance.
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+}
+--- END FILE: src/app/rsvp/page.tsx ---
+
+--- START FILE: src/app/rsvp/select-party/page.tsx ---
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "~/components/ui/button";
+import { api } from "~/trpc/react";
+
+export default function SelectPartyPage() {
+    const router = useRouter();
+    const [parties, setParties] = useState<string[]>([]);
+    const [selectedParty, setSelectedParty] = useState<string>("");
+    const [name, setName] = useState("");
+
+    useEffect(() => {
+        const storedParties = sessionStorage.getItem("rsvp_parties");
+        const storedName = sessionStorage.getItem("rsvp_name");
+
+        if (!storedParties || !storedName) {
+            router.push("/rsvp");
+            return;
+        }
+
+        setParties(JSON.parse(storedParties) as string[]);
+        setName(storedName);
+    }, [router]);
+
+    const getPartyQuery = api.rsvp.getParty.useQuery(
+        { partyName: selectedParty },
+        { enabled: false },
+    );
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!selectedParty) return;
+
+        const party = await getPartyQuery.refetch();
+        if (party.data) {
+            sessionStorage.setItem("rsvp_party", JSON.stringify(party.data));
+            sessionStorage.removeItem("rsvp_parties");
+            sessionStorage.removeItem("rsvp_name");
+            router.push("/rsvp/events");
+        }
+    };
+
+    if (parties.length === 0) {
+        return null;
+    }
+
+    return (
+        <div className="min-h-screen bg-gradient-to-b from-neutral-50 to-neutral-100 px-4 py-16">
+            <div className="mx-auto max-w-md">
+                <div className="mb-8 text-center">
+                    <h1 className="font-serif text-4xl font-light text-neutral-900">
+                        Select Your Party
+                    </h1>
+                    <p className="mt-2 text-neutral-600">
+                        We found multiple parties with the name &quot;{name}&quot;. Please
+                        select yours:
+                    </p>
+                </div>
+
+                <div className="rounded-lg bg-white p-8 shadow-md">
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        <div className="space-y-3">
+                            {parties.map((party) => (
+                                <label
+                                    key={party}
+                                    className="flex cursor-pointer items-center rounded-md border border-neutral-300 p-4 transition-colors hover:bg-neutral-50"
+                                >
+                                    <input
+                                        type="radio"
+                                        name="party"
+                                        value={party}
+                                        checked={selectedParty === party}
+                                        onChange={(e) => setSelectedParty(e.target.value)}
+                                        className="h-4 w-4 border-neutral-300 text-neutral-900 focus:ring-neutral-500"
+                                    />
+                                    <span className="ml-3 text-neutral-900">{party}</span>
+                                </label>
+                            ))}
+                        </div>
+
+                        <Button
+                            type="submit"
+                            className="w-full"
+                            disabled={!selectedParty || getPartyQuery.isFetching}
+                        >
+                            {getPartyQuery.isFetching ? "Loading..." : "Continue"}
+                        </Button>
+                    </form>
+                </div>
+
+                <div className="mt-6 text-center">
+                    <button
+                        onClick={() => router.push("/rsvp")}
+                        className="text-sm text-neutral-600 underline hover:text-neutral-900"
+                    >
+                        Go back
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+}
+--- END FILE: src/app/rsvp/select-party/page.tsx ---
 
 --- START FILE: src/app/schedule/(components)/DayDisplay.tsx ---
 "use client";
@@ -2158,41 +2645,49 @@ import { createEnv } from "@t3-oss/env-nextjs";
 import { z } from "zod";
 
 export const env = createEnv({
-  /**
-   * Specify your server-side environment variables schema here. This way you can ensure the app
-   * isn't built with invalid env vars.
-   */
-  server: {
-    NODE_ENV: z.enum(["development", "test", "production"]),
-  },
+    /**
+     * Specify your server-side environment variables schema here. This way you can ensure the app
+     * isn't built with invalid env vars.
+     */
+    server: {
+        NODE_ENV: z.enum(["development", "test", "production"]),
+        RSVP_PASSWORD: z.string().min(1, "RSVP_PASSWORD cannot be empty"),
+        GOOGLE_SHEETS_ID: z.string(),
+        GOOGLE_SERVICE_ACCOUNT_EMAIL: z.string().email(),
+        GOOGLE_PRIVATE_KEY: z.string(),
+    },
 
-  /**
-   * Specify your client-side environment variables schema here. This way you can ensure the app
-   * isn't built with invalid env vars. To expose them to the client, prefix them with
-   * `NEXT_PUBLIC_`.
-   */
-  client: {
-    // NEXT_PUBLIC_CLIENTVAR: z.string(),
-  },
+    /**
+     * Specify your client-side environment variables schema here. This way you can ensure the app
+     * isn't built with invalid env vars. To expose them to the client, prefix them with
+     * `NEXT_PUBLIC_`.
+     */
+    client: {
+        // NEXT_PUBLIC_CLIENTVAR: z.string(),
+    },
 
-  /**
-   * You can't destruct `process.env` as a regular object in the Next.js edge runtimes (e.g.
-   * middlewares) or client-side so we need to destruct manually.
-   */
-  runtimeEnv: {
-    NODE_ENV: process.env.NODE_ENV,
-    // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
-  },
-  /**
-   * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
-   * useful for Docker builds.
-   */
-  skipValidation: !!process.env.SKIP_ENV_VALIDATION,
-  /**
-   * Makes it so that empty strings are treated as undefined. `SOME_VAR: z.string()` and
-   * `SOME_VAR=''` will throw an error.
-   */
-  emptyStringAsUndefined: true,
+    /**
+     * You can't destruct `process.env` as a regular object in the Next.js edge runtimes (e.g.
+     * middlewares) or client-side so we need to destruct manually.
+     */
+    runtimeEnv: {
+        NODE_ENV: process.env.NODE_ENV,
+        RSVP_PASSWORD: process.env.RSVP_PASSWORD,
+        GOOGLE_SHEETS_ID: process.env.GOOGLE_SHEETS_ID,
+        GOOGLE_SERVICE_ACCOUNT_EMAIL: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+        GOOGLE_PRIVATE_KEY: process.env.GOOGLE_PRIVATE_KEY,
+        // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
+    },
+    /**
+     * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
+     * useful for Docker builds.
+     */
+    skipValidation: !!process.env.SKIP_ENV_VALIDATION,
+    /**
+     * Makes it so that empty strings are treated as undefined. `SOME_VAR: z.string()` and
+     * `SOME_VAR=''` will throw an error.
+     */
+    emptyStringAsUndefined: true,
 });
 
 --- END FILE: src/env.js ---
@@ -2383,6 +2878,54 @@ export interface GalleryImage {
   
 --- END FILE: src/lib/data/gallery-data.ts ---
 
+--- START FILE: src/lib/data/rsvp-events.ts ---
+export interface Event {
+    id: string;
+    name: string;
+    date: string;
+    time: string;
+    columnName: string;
+}
+
+export const WEDDING_EVENTS: Event[] = [
+    {
+        id: "welcome-dinner",
+        name: "Welcome Dinner",
+        date: "June 18, 2026",
+        time: "7:00 PM",
+        columnName: "Welcome Dinner",
+    },
+    {
+        id: "grah-shanti",
+        name: "Grah Shanti",
+        date: "June 19, 2026",
+        time: "10:00 AM",
+        columnName: "Grah Shanti",
+    },
+    {
+        id: "wedding-ceremony",
+        name: "Wedding Ceremony",
+        date: "June 19, 2026",
+        time: "6:00 PM",
+        columnName: "Wedding Ceremony",
+    },
+    {
+        id: "reception",
+        name: "Reception",
+        date: "June 19, 2026",
+        time: "8:00 PM",
+        columnName: "Reception",
+    },
+    {
+        id: "farewell-brunch",
+        name: "Farewell Brunch",
+        date: "June 20, 2026",
+        time: "11:00 AM",
+        columnName: "Farewell Brunch",
+    },
+];
+--- END FILE: src/lib/data/rsvp-events.ts ---
+
 --- START FILE: src/lib/utils.ts ---
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
@@ -2394,8 +2937,8 @@ export function cn(...inputs: ClassValue[]) {
 --- END FILE: src/lib/utils.ts ---
 
 --- START FILE: src/server/api/root.ts ---
-import { postRouter } from "~/server/api/routers/post";
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
+import { rsvpRouter } from "~/server/api/routers/rsvp";
 
 /**
  * This is the primary router for your server.
@@ -2403,7 +2946,7 @@ import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  post: postRouter,
+    rsvp: rsvpRouter
 });
 
 // export type definition of API
@@ -2420,49 +2963,127 @@ export const createCaller = createCallerFactory(appRouter);
 
 --- END FILE: src/server/api/root.ts ---
 
---- START FILE: src/server/api/routers/post.ts ---
+--- START FILE: src/server/api/routers/rsvp.ts ---
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { sheetsService } from "~/server/services/sheets";
+import { env } from "~/env";
+import { authRateLimiter } from "~/server/lib/rate-limiter";
 
-// Mocked DB
-interface Post {
-  id: number;
-  name: string;
-}
-const posts: Post[] = [
-  {
-    id: 1,
-    name: "Hello World",
-  },
-];
+const getClientIp = (headers: Headers): string => {
+    return (
+        headers.get("x-forwarded-for")?.split(",")[0] ??
+        headers.get("x-real-ip") ??
+        "unknown"
+    );
+};
 
-export const postRouter = createTRPCRouter({
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
-    }),
+export const rsvpRouter = createTRPCRouter({
+    authenticate: publicProcedure
+        .input(
+            z.object({
+                name: z.string().min(1, "Name is required"),
+                password: z.string().min(1, "Password is required"),
+            }),
+        )
+        .mutation(async ({ input, ctx }) => {
+            const clientIp = getClientIp(ctx.headers);
+            const rateLimitResult = authRateLimiter.check(clientIp);
 
-  create: publicProcedure
-    .input(z.object({ name: z.string().min(1) }))
-    .mutation(async ({ input }) => {
-      const post: Post = {
-        id: posts.length + 1,
-        name: input.name,
-      };
-      posts.push(post);
-      return post;
-    }),
+            if (!rateLimitResult.allowed) {
+                const resetAt = rateLimitResult.resetAt ?? Date.now();
+                const secondsRemaining = Math.ceil((resetAt - Date.now()) / 1000);
+                throw new TRPCError({
+                    code: "TOO_MANY_REQUESTS",
+                    message: `Too many attempts. Please try again in ${secondsRemaining} seconds.`,
+                });
+            }
 
-  getLatest: publicProcedure.query(() => {
-    return posts.at(-1) ?? null;
-  }),
+            if (input.password !== env.RSVP_PASSWORD) {
+                throw new TRPCError({
+                    code: "UNAUTHORIZED",
+                    message: "Incorrect password",
+                });
+            }
+
+            const guests = await sheetsService.findGuestsByName(input.name);
+
+            if (guests.length === 0) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: "No guests found with that name",
+                });
+            }
+
+            const parties = Array.from(
+                new Set(guests.map((g) => g.party)),
+            ).filter((p) => p.length > 0);
+
+            if (parties.length === 0) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: "No party found for this guest",
+                });
+            }
+
+            if (parties.length === 1) {
+                const party = await sheetsService.getPartyByName(parties[0]!);
+                return {
+                    needsPartySelection: false,
+                    party: party ?? undefined,
+                };
+            }
+
+            return {
+                needsPartySelection: true,
+                parties,
+            };
+        }),
+
+    getParty: publicProcedure
+        .input(
+            z.object({
+                partyName: z.string().min(1),
+            }),
+        )
+        .query(async ({ input }) => {
+            const party = await sheetsService.getPartyByName(input.partyName);
+
+            if (!party) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: "Party not found",
+                });
+            }
+
+            return party;
+        }),
+
+    submitRsvps: publicProcedure
+        .input(
+            z.object({
+                partyName: z.string().min(1),
+                responses: z.array(
+                    z.object({
+                        firstName: z.string(),
+                        lastName: z.string(),
+                        eventColumnName: z.string(),
+                        response: z.boolean().nullable(),
+                    }),
+                ),
+            }),
+        )
+        .mutation(async ({ input }) => {
+            await sheetsService.updateRsvps(input.partyName, input.responses);
+
+            return {
+                success: true,
+                message: "RSVPs submitted successfully",
+            };
+        }),
 });
-
---- END FILE: src/server/api/routers/post.ts ---
+--- END FILE: src/server/api/routers/rsvp.ts ---
 
 --- START FILE: src/server/api/trpc.ts ---
 /**
@@ -2570,6 +3191,308 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
 export const publicProcedure = t.procedure.use(timingMiddleware);
 
 --- END FILE: src/server/api/trpc.ts ---
+
+--- START FILE: src/server/lib/rate-limiter.ts ---
+interface RateLimitEntry {
+    count: number;
+    resetAt: number;
+}
+
+class RateLimiter {
+    private requests = new Map<string, RateLimitEntry>();
+    private readonly maxRequests: number;
+    private readonly windowMs: number;
+
+    constructor(maxRequests: number, windowMs: number) {
+        this.maxRequests = maxRequests;
+        this.windowMs = windowMs;
+    }
+
+    check(identifier: string): { allowed: boolean; resetAt?: number } {
+        const now = Date.now();
+        const entry = this.requests.get(identifier);
+
+        if (!entry || now > entry.resetAt) {
+            this.requests.set(identifier, {
+                count: 1,
+                resetAt: now + this.windowMs,
+            });
+            return { allowed: true };
+        }
+
+        if (entry.count >= this.maxRequests) {
+            return { allowed: false, resetAt: entry.resetAt };
+        }
+
+        entry.count++;
+        return { allowed: true };
+    }
+
+    cleanup() {
+        const now = Date.now();
+        for (const [key, entry] of this.requests.entries()) {
+            if (now > entry.resetAt) {
+                this.requests.delete(key);
+            }
+        }
+    }
+}
+
+export const authRateLimiter = new RateLimiter(5, 60 * 1000);
+
+setInterval(() => {
+    authRateLimiter.cleanup();
+}, 60 * 1000);
+--- END FILE: src/server/lib/rate-limiter.ts ---
+
+--- START FILE: src/server/services/sheets.ts ---
+import { google } from "googleapis";
+import { env } from "~/env";
+import { WEDDING_EVENTS } from "~/lib/data/rsvp-events";
+import type { Guest, Party, RsvpResponse } from "~/types/rsvp";
+
+const getSheets = () => {
+    const serviceAccountEmail = env.GOOGLE_SERVICE_ACCOUNT_EMAIL as string;
+    const privateKey = env.GOOGLE_PRIVATE_KEY as string;
+
+    if (!serviceAccountEmail || !privateKey) {
+        throw new Error("Missing Google Sheets credentials");
+    }
+
+    const auth = new google.auth.GoogleAuth({
+        credentials: {
+            client_email: serviceAccountEmail,
+            private_key: privateKey.replace(/\\n/g, "\n"),
+        },
+        scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+    });
+
+    return google.sheets({ version: "v4", auth });
+};
+
+interface SheetRow {
+    firstName: string;
+    lastName: string;
+    party: string;
+    phone?: string;
+    email?: string;
+    [key: string]: string | undefined;
+}
+
+const COLUMN_MAPPING = {
+    firstName: 0,
+    lastName: 1,
+    party: 2,
+    phone: 3,
+    email: 4,
+} as const;
+
+const EVENT_COLUMN_START = 5;
+const LAST_UPDATED_COLUMN_OFFSET = WEDDING_EVENTS.length;
+
+export class GoogleSheetsService {
+    private sheets = getSheets();
+    private sheetId: string;
+
+    constructor() {
+        const sheetId = env.GOOGLE_SHEETS_ID as string
+        if (!sheetId) {
+            throw new Error("Missing Google Sheets ID");
+        }
+        this.sheetId = sheetId;
+    }
+
+    private parseRow(row: unknown[]): SheetRow | null {
+        const firstName = row[COLUMN_MAPPING.firstName];
+        const lastName = row[COLUMN_MAPPING.lastName];
+
+        if (typeof firstName !== "string" || typeof lastName !== "string") {
+            return null;
+        }
+
+        const party = row[COLUMN_MAPPING.party];
+        const phone = row[COLUMN_MAPPING.phone];
+        const email = row[COLUMN_MAPPING.email];
+
+        const parsed: SheetRow = {
+            firstName,
+            lastName,
+            party: typeof party === "string" ? party : "",
+            phone: typeof phone === "string" ? phone : undefined,
+            email: typeof email === "string" ? email : undefined,
+        };
+
+        WEDDING_EVENTS.forEach((event, index) => {
+            const columnIndex = EVENT_COLUMN_START + index;
+            const value = row[columnIndex];
+            parsed[event.columnName] =
+                typeof value === "string" ? value : undefined;
+        });
+
+        return parsed;
+    }
+
+    private rowToGuest(row: SheetRow): Guest {
+        const rsvps: Record<string, RsvpResponse> = {};
+
+        WEDDING_EVENTS.forEach((event) => {
+            const value = row[event.columnName];
+            if (!value) {
+                rsvps[event.columnName] = null;
+            } else if (value.toLowerCase() === "true") {
+                rsvps[event.columnName] = true
+            } else {
+                rsvps[event.columnName] = false
+            }
+        });
+
+        return {
+            firstName: row.firstName,
+            lastName: row.lastName,
+            party: row.party,
+            phone: row.phone,
+            email: row.email,
+            rsvps,
+        };
+    }
+
+    async getAllGuests(): Promise<Guest[]> {
+        const response = await this.sheets.spreadsheets.values.get({
+            spreadsheetId: this.sheetId,
+            range: "A2:Z",
+        });
+
+        const rows = response.data.values ?? [];
+        const guests: Guest[] = [];
+
+        for (const row of rows) {
+            const parsed = this.parseRow(row);
+            if (parsed) {
+                guests.push(this.rowToGuest(parsed));
+            }
+        }
+
+        return guests;
+    }
+
+    async findGuestsByName(name: string): Promise<Guest[]> {
+        const allGuests = await this.getAllGuests();
+        const searchTerm = name.toLowerCase().trim();
+
+        return allGuests.filter((guest) => {
+            const fullName = `${guest.firstName} ${guest.lastName}`.toLowerCase();
+            return fullName.includes(searchTerm);
+        });
+    }
+
+    async getPartyByName(partyName: string): Promise<Party | null> {
+        const allGuests = await this.getAllGuests();
+        const partyMembers = allGuests.filter((g) => g.party === partyName);
+
+        if (partyMembers.length === 0) {
+            return null;
+        }
+
+        return {
+            name: partyName,
+            members: partyMembers,
+        };
+    }
+
+    async updateRsvps(
+        partyName: string,
+        updates: Array<{
+            firstName: string;
+            lastName: string;
+            eventColumnName: string;
+            response: RsvpResponse;
+        }>,
+    ): Promise<void> {
+        const response = await this.sheets.spreadsheets.values.get({
+            spreadsheetId: this.sheetId,
+            range: "A2:Z",
+        });
+
+        const rows = response.data.values ?? [];
+        const updateRequests: Array<{
+            range: string;
+            values: string[][];
+        }> = [];
+
+        for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
+            const row = rows[rowIndex];
+            if (!row) continue;
+
+            const parsed = this.parseRow(row);
+
+            if (!parsed || parsed.party !== partyName) {
+                continue;
+            }
+
+            const guestUpdates = updates.filter(
+                (u) =>
+                    u.firstName === parsed.firstName &&
+                    u.lastName === parsed.lastName,
+            );
+
+            for (const update of guestUpdates) {
+                const eventIndex = WEDDING_EVENTS.findIndex(
+                    (e) => e.columnName === update.eventColumnName,
+                );
+
+                if (eventIndex === -1) continue;
+
+                const columnIndex = EVENT_COLUMN_START + eventIndex;
+                const columnLetter = this.getColumnLetter(columnIndex);
+                const actualRowNumber = rowIndex + 2;
+
+                const response = update.response !== null ? `${update.response}` : "";
+
+                updateRequests.push({
+                    range: `${columnLetter}${actualRowNumber}`,
+                    values: [[response]],
+                });
+            }
+
+            const lastUpdatedColumnIndex =
+                EVENT_COLUMN_START + LAST_UPDATED_COLUMN_OFFSET;
+            const lastUpdatedColumnLetter = this.getColumnLetter(
+                lastUpdatedColumnIndex,
+            );
+            const actualRowNumber = rowIndex + 2;
+
+            updateRequests.push({
+                range: `${lastUpdatedColumnLetter}${actualRowNumber}`,
+                values: [[new Date().toISOString()]],
+            });
+        }
+
+        if (updateRequests.length > 0) {
+            await this.sheets.spreadsheets.values.batchUpdate({
+                spreadsheetId: this.sheetId,
+                requestBody: {
+                    valueInputOption: "RAW",
+                    data: updateRequests,
+                },
+            });
+        }
+    }
+
+    private getColumnLetter(columnIndex: number): string {
+        let letter = "";
+        let index = columnIndex;
+
+        while (index >= 0) {
+            letter = String.fromCharCode((index % 26) + 65) + letter;
+            index = Math.floor(index / 26) - 1;
+        }
+
+        return letter;
+    }
+}
+
+export const sheetsService = new GoogleSheetsService();
+--- END FILE: src/server/services/sheets.ts ---
 
 --- START FILE: src/styles/globals.css ---
 @import "tailwindcss";
@@ -2857,6 +3780,34 @@ export const { trpc: api, HydrateClient } = createHydrationHelpers<AppRouter>(
 );
 
 --- END FILE: src/trpc/server.ts ---
+
+--- START FILE: src/types/rsvp.ts ---
+export type RsvpResponse = boolean | null;
+
+export interface Guest {
+    firstName: string;
+    lastName: string;
+    party: string;
+    phone?: string;
+    email?: string;
+    rsvps: Record<string, RsvpResponse>;
+}
+
+export interface Party {
+    name: string;
+    members: Guest[];
+}
+
+export interface RsvpSubmission {
+    partyName: string;
+    responses: {
+        guestFirstName: string;
+        guestLastName: string;
+        eventColumnName: string;
+        response: RsvpResponse;
+    }[];
+}
+--- END FILE: src/types/rsvp.ts ---
 
 --- START FILE: tsconfig.json ---
 {

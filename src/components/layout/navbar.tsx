@@ -49,7 +49,7 @@ const Navbar: React.FC = () => {
                     <nav
                         className={cn(
                             "decoration-primary-foreground font-medium font-serif tracking-wider decoration-2 underline-offset-8",
-                            "flex gap-8 md:gap-12 md:text-lg",
+                            "flex gap-8 md:gap-12 md:text-lg items-center",
                         )}
                     >
                         {ROUTES.map((route) => (
@@ -65,6 +65,14 @@ const Navbar: React.FC = () => {
                                 {route.title}
                             </Link>
                         ))}
+                        <Link
+                            href="/rsvp"
+                            className={cn(
+                                "text-primary bg-primary-foreground rounded-sm py-2 px-4 hover:scale-105 transition-transform cursor-pointer",
+                            )}
+                        >
+                            RSVP
+                        </Link>
                     </nav>
                 </div>
                 <div className="sm:hidden">
@@ -103,6 +111,15 @@ const Navbar: React.FC = () => {
                                         {route.title}
                                     </Link>
                                 ))}
+                                <Link
+                                    href="/rsvp"
+                                    className={cn(
+                                        "hover:text-primary border-l-4 border-l-transparent px-4 py-2 text-lg font-medium transition-colors",
+                                    )}
+                                    onClick={() => setSheetOpen(false)}
+                                >
+                                    RSVP
+                                </Link>
                             </nav>
                             <Separator />
                             <Link
@@ -115,7 +132,7 @@ const Navbar: React.FC = () => {
                                 <p
                                     className={cn(
                                         "font-serif",
-                                        "text-primary text-xs tracking-widest decoration-1 underline-offset-4 group-hover:underline",
+                                        "text-primary text-xs tracking-widest decoration-1 underline-offset-4 group-hover:underline"
                                     )}
                                 >
                                     {EMAIL_ADDRESS}

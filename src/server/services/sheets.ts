@@ -37,10 +37,9 @@ const COLUMN_MAPPING = {
     party: 2,
     phone: 3,
     email: 4,
-} as const;
+} as const
 
 const EVENT_COLUMN_START = 5;
-const LAST_UPDATED_COLUMN_OFFSET = WEDDING_EVENTS.length;
 
 export class GoogleSheetsService {
     private sheets = getSheets();
@@ -89,12 +88,12 @@ export class GoogleSheetsService {
 
         WEDDING_EVENTS.forEach((event) => {
             const value = row[event.columnName];
-            if (value === "Attending") {
-                rsvps[event.columnName] = "Attending";
-            } else if (value === "Not Attending") {
-                rsvps[event.columnName] = "Not Attending";
-            } else {
+            if (!value) {
                 rsvps[event.columnName] = null;
+            } else if (value.toLowerCase() === "true") {
+                rsvps[event.columnName] = true
+            } else {
+                rsvps[event.columnName] = false
             }
         });
 
@@ -111,7 +110,9 @@ export class GoogleSheetsService {
     async getAllGuests(): Promise<Guest[]> {
         const response = await this.sheets.spreadsheets.values.get({
             spreadsheetId: this.sheetId,
-            range: "A2:Z",
+
+            range: "Guests!A2:Z",
+
         });
 
         const rows = response.data.values ?? [];
@@ -162,71 +163,101 @@ export class GoogleSheetsService {
     ): Promise<void> {
         const response = await this.sheets.spreadsheets.values.get({
             spreadsheetId: this.sheetId,
-            range: "A2:Z",
+            range: "Guests!A2:Z",
         });
-
         const rows = response.data.values ?? [];
-        const updateRequests: Array<{
+        const valueUpdateRequests: Array<{
             range: string;
-            values: string[][];
+            values: (string | boolean)[][];
         }> = [];
-
+        const checkboxRanges: string[] = [];
         for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
             const row = rows[rowIndex];
             if (!row) continue;
-
             const parsed = this.parseRow(row);
-
             if (!parsed || parsed.party !== partyName) {
                 continue;
             }
-
             const guestUpdates = updates.filter(
                 (u) =>
                     u.firstName === parsed.firstName &&
                     u.lastName === parsed.lastName,
             );
-
             for (const update of guestUpdates) {
                 const eventIndex = WEDDING_EVENTS.findIndex(
                     (e) => e.columnName === update.eventColumnName,
                 );
-
                 if (eventIndex === -1) continue;
-
                 const columnIndex = EVENT_COLUMN_START + eventIndex;
                 const columnLetter = this.getColumnLetter(columnIndex);
                 const actualRowNumber = rowIndex + 2;
-
-                updateRequests.push({
-                    range: `${columnLetter}${actualRowNumber}`,
-                    values: [[update.response ?? ""]],
+                const cellRange = `Guests!${columnLetter}${actualRowNumber}`;
+                checkboxRanges.push(cellRange);
+                const cellValue = update.response ?? "";
+                valueUpdateRequests.push({
+                    range: cellRange,
+                    values: [[cellValue]],
                 });
             }
-
-            const lastUpdatedColumnIndex =
-                EVENT_COLUMN_START + LAST_UPDATED_COLUMN_OFFSET;
-            const lastUpdatedColumnLetter = this.getColumnLetter(
-                lastUpdatedColumnIndex,
-            );
-            const actualRowNumber = rowIndex + 2;
-
-            updateRequests.push({
-                range: `${lastUpdatedColumnLetter}${actualRowNumber}`,
-                values: [[new Date().toISOString()]],
-            });
         }
-
-        if (updateRequests.length > 0) {
+        if (valueUpdateRequests.length > 0) {
             await this.sheets.spreadsheets.values.batchUpdate({
                 spreadsheetId: this.sheetId,
                 requestBody: {
-                    valueInputOption: "RAW",
-                    data: updateRequests,
+                    valueInputOption: "USER_ENTERED",
+                    data: valueUpdateRequests,
+                },
+            });
+        }
+        if (checkboxRanges.length > 0) {
+            const sheetMetadata = await this.sheets.spreadsheets.get({
+                spreadsheetId: this.sheetId,
+            });
+            const guestsSheet = sheetMetadata.data.sheets?.find(
+                (sheet) => sheet.properties?.title === "Guests",
+            );
+            const guestsSheetId = guestsSheet?.properties?.sheetId;
+            if (guestsSheetId === undefined || guestsSheetId === null) {
+                throw new Error("Could not find Guests sheet ID");
+            }
+            const requests = checkboxRanges.map((range) => ({
+                setDataValidation: {
+                    range: this.rangeToGridRange(range, guestsSheetId),
+                    rule: {
+                        condition: {
+                            type: "BOOLEAN" as const,
+                        },
+                        strict: true,
+                    },
+                },
+            }));
+            await this.sheets.spreadsheets.batchUpdate({
+                spreadsheetId: this.sheetId,
+                requestBody: {
+                    requests,
                 },
             });
         }
     }
+    private rangeToGridRange(a1Notation: string, sheetId: number) {
+        const match = /^Guests!([A-Z]+)(\d+)$/.exec(a1Notation);
+        if (!match) {
+            throw new Error(`Invalid range format: ${a1Notation}`);
+        }
+        const column = match[1];
+        const row = parseInt(match[2]!, 10);
+        const columnIndex = column!.split("").reduce((acc, char) => {
+            return acc * 26 + char.charCodeAt(0) - 64;
+        }, 0) - 1;
+        return {
+            sheetId,
+            startRowIndex: row - 1,
+            endRowIndex: row,
+            startColumnIndex: columnIndex,
+            endColumnIndex: columnIndex + 1,
+        };
+    }
+
 
     private getColumnLetter(columnIndex: number): string {
         let letter = "";
