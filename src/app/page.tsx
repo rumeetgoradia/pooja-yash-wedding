@@ -6,6 +6,8 @@ import LandingImage from "public/heros/home.png";
 import Image from "next/image";
 import { Content } from "~/components/layout/content";
 import { type HeroImageProps } from "~/components/layout/hero";
+import { Button } from "~/components/ui/button";
+import Link from "next/link";
 
 const HeroImage: HeroImageProps = {
     src: LandingImage,
@@ -19,7 +21,7 @@ export default function Home() {
             <div className="grid grid-cols-1 items-center gap-y-12 lg:grid-cols-2 lg:gap-x-20 lg:gap-y-16">
                 <div className="flex flex-col">
                     <div className="flex items-center justify-center lg:justify-start">
-                        <BorderedLogo className='w-[300px]' />
+                        <BorderedLogo className='w-[265px]' />
                     </div>
                     <div className="mt-12 flex flex-col gap-8 text-center lg:gap-10 lg:text-left">
                         <div className="font-serif">
@@ -58,6 +60,9 @@ export default function Home() {
                                 </div>
                             </div>
                         </div>
+                        <Button variant="default" size="lg" className='tracking-widest text-xl py-6 font-serif font-bold' asChild>
+                            <Link href="/rsvp" aria-label="RSVP to the wedding">RSVP</Link>
+                        </Button>
                     </div >
                 </div >
 

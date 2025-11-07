@@ -37,7 +37,7 @@ export const rsvpRouter = createTRPCRouter({
             if (input.password !== env.RSVP_PASSWORD) {
                 throw new TRPCError({
                     code: "UNAUTHORIZED",
-                    message: "Incorrect password",
+                    message: "Incorrect password!",
                 });
             }
 
@@ -46,7 +46,7 @@ export const rsvpRouter = createTRPCRouter({
             if (guests.length === 0) {
                 throw new TRPCError({
                     code: "NOT_FOUND",
-                    message: "No guests found with that name",
+                    message: "No guests found with that name.",
                 });
             }
 
@@ -57,7 +57,7 @@ export const rsvpRouter = createTRPCRouter({
             if (parties.length === 0) {
                 throw new TRPCError({
                     code: "NOT_FOUND",
-                    message: "No party found for this guest",
+                    message: "No party found for this guest. Please contact the couple.",
                 });
             }
 

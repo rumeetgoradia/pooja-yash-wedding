@@ -4,6 +4,8 @@ import DayDisplay from "./(components)/DayDisplay";
 import LandingImage from "public/heros/schedule.jpg"
 import type { HeroImageProps } from "~/components/layout/hero";
 import { Content } from "~/components/layout/content";
+import { Button } from "~/components/ui/button";
+import Link from "next/link";
 
 const HeroImage: HeroImageProps = {
     src: LandingImage,
@@ -32,6 +34,11 @@ export default function SchedulePage() {
                         />
                     );
                 })}
+            </div>
+            <div className='flex mt-10 items-center justify-center w-full'>
+                <Button variant="default" size="lg" className='tracking-widest text-xl py-6 font-serif font-bold sm:max-w-[200px] w-full' asChild>
+                    <Link href="/rsvp" aria-label="RSVP to the wedding">RSVP</Link>
+                </Button>
             </div>
         </Content>
     );

@@ -1,4 +1,6 @@
 "use client";
+
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
@@ -12,27 +14,31 @@ import {
 import { Input } from "~/components/ui/input";
 import { api } from "~/trpc/react";
 import { useGuest } from "~/hooks/use-guest";
+import { cn } from "~/lib/utils";
+
 const loginSchema = z.object({
-    name: z.string().min(1, "Name is required"),
-    password: z.string().min(1, "Password is required"),
+    name: z.string().min(1, "Please enter your name."),
+    password: z.string().min(1, "Please enter your password."),
 });
 type LoginFormData = z.infer<typeof loginSchema>;
+
 interface LoginFormProps {
     onSuccess: (
         needsPartySelection: boolean,
         parties?: string[],
-        guestName?: string,
+        guestName?: string
     ) => void;
 }
+
 export function LoginForm({ onSuccess }: LoginFormProps) {
     const { setParty } = useGuest();
+    const [showPassword, setShowPassword] = useState(false);
+
     const form = useForm<LoginFormData>({
         resolver: zodResolver(loginSchema),
-        defaultValues: {
-            name: "",
-            password: "",
-        },
+        defaultValues: { name: "", password: "" },
     });
+
     const authenticateMutation = api.rsvp.authenticate.useMutation({
         onSuccess: (data) => {
             const name = form.getValues("name");
@@ -44,39 +50,42 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
             }
         },
         onError: (error) => {
-            form.setError("root", {
-                message: error.message,
-            });
+            form.setError("root", { message: error.message });
         },
     });
+
     const onSubmit = (data: LoginFormData) => {
         authenticateMutation.mutate(data);
     };
+
     return (
-        <div className="mx-auto max-w-md">
+        <section className="mx-auto max-w-md px-4">
             <div className="mb-8 text-center">
-                <h1 className="font-serif text-4xl font-light text-neutral-900">
+                <h1 className="font-serif text-4xl font-light leading-tight text-neutral-900">
                     RSVP
                 </h1>
-                <p className="mt-2 text-neutral-600">
+                <p className="mt-2 text-sm text-neutral-600">
                     Please enter your name and the password provided in your invitation.
                 </p>
             </div>
-            <div className="rounded-lg bg-white p-8 shadow-md">
-                <form onSubmit={form.handleSubmit(onSubmit)}>
-                    <FieldGroup>
+
+            <div className="rounded-xl bg-white p-6 shadow-sm ring-1 ring-neutral-200/60 md:p-8">
+                <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
+                    <FieldGroup className=" ">
                         <Controller
                             name="name"
                             control={form.control}
                             render={({ field, fieldState }) => (
                                 <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor="login-name">Your Name</FieldLabel>
+                                    <FieldLabel htmlFor="login-name">Your name</FieldLabel>
                                     <Input
                                         {...field}
                                         id="login-name"
                                         aria-invalid={fieldState.invalid}
                                         placeholder="Pooja Antala"
                                         autoComplete="name"
+                                        autoFocus
+                                        className="border-neutral-300 focus-visible:ring-neutral-500"
                                     />
                                     {fieldState.invalid && (
                                         <FieldError errors={[fieldState.error]} />
@@ -84,43 +93,64 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
                                 </Field>
                             )}
                         />
+
                         <Controller
                             name="password"
                             control={form.control}
                             render={({ field, fieldState }) => (
                                 <Field data-invalid={fieldState.invalid}>
                                     <FieldLabel htmlFor="login-password">Password</FieldLabel>
-                                    <Input
-                                        {...field}
-                                        id="login-password"
-                                        type="password"
-                                        aria-invalid={fieldState.invalid}
-                                        autoComplete="current-password"
-                                    />
+
+                                    <div className="relative">
+                                        <Input
+                                            {...field}
+                                            id="login-password"
+                                            type={showPassword ? "text" : "password"}
+                                            aria-invalid={fieldState.invalid}
+                                            autoComplete="current-password"
+                                            className="pr-24 border-neutral-300 focus-visible:ring-neutral-500"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowPassword((s) => !s)}
+                                            className={cn(
+                                                "absolute inset-y-0 right-2 my-auto rounded-md px-2 text-sm",
+                                                "text-neutral-600 hover:text-neutral-900"
+                                            )}
+                                            aria-label={showPassword ? "Hide password" : "Show password"}
+                                        >
+                                            {showPassword ? "Hide" : "Show"}
+                                        </button>
+                                    </div>
+
                                     {fieldState.invalid && (
                                         <FieldError errors={[fieldState.error]} />
                                     )}
                                 </Field>
                             )}
                         />
+
                         {form.formState.errors.root && (
                             <div className="rounded-md bg-red-50 p-3 text-sm text-red-800">
                                 {form.formState.errors.root.message}
                             </div>
                         )}
+
                         <Button
                             type="submit"
-                            className="w-full"
+                            className="mt-2 w-full"
                             disabled={authenticateMutation.isPending}
+                            size="lg"
                         >
-                            {authenticateMutation.isPending ? "Checking..." : "Continue"}
+                            {authenticateMutation.isPending ? "Checking…" : "Continue"}
                         </Button>
                     </FieldGroup>
                 </form>
             </div>
+
             <div className="mt-6 text-center text-sm text-neutral-600">
-                <p>Having trouble? Please contact Pooja or Yash for assistance.</p>
+                Having trouble? Please contact Pooja or Yash for assistance.
             </div>
-        </div>
+        </section>
     );
 }

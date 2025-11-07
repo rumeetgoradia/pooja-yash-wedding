@@ -192,7 +192,10 @@ export class GoogleSheetsService {
                 const columnLetter = this.getColumnLetter(columnIndex);
                 const actualRowNumber = rowIndex + 2;
                 const cellRange = `Guests!${columnLetter}${actualRowNumber}`;
-                checkboxRanges.push(cellRange);
+                if (update.response !== null) {
+                    // we want a TRUE / FALSE checkbox
+                    checkboxRanges.push(cellRange);
+                }
                 const cellValue = update.response ?? "";
                 valueUpdateRequests.push({
                     range: cellRange,
@@ -276,6 +279,8 @@ export class GoogleSheetsService {
         const data: Array<{ range: string; values: (string | boolean)[][] }> = [];
         for (let rowIdx = 0; rowIdx < rows.length; rowIdx++) {
             const row = rows[rowIdx];
+            if (!row) continue;
+
             const parsed = this.parseRow(row);
 
             if (!parsed || parsed.party !== partyName) continue;
