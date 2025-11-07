@@ -258,6 +258,60 @@ export class GoogleSheetsService {
         };
     }
 
+    async updateContacts(
+        partyName: string,
+        contacts: Array<{
+            firstName: string;
+            lastName: string;
+            phone?: string;
+            email?: string;
+        }>,
+    ): Promise<void> {
+        // pull current sheet so we know row numbers
+        const response = await this.sheets.spreadsheets.values.get({
+            spreadsheetId: this.sheetId,
+            range: "Guests!A2:Z",
+        });
+        const rows = response.data.values ?? [];
+        const data: Array<{ range: string; values: (string | boolean)[][] }> = [];
+        for (let rowIdx = 0; rowIdx < rows.length; rowIdx++) {
+            const row = rows[rowIdx];
+            const parsed = this.parseRow(row);
+
+            if (!parsed || parsed.party !== partyName) continue;
+
+            const match = contacts.find(
+                c =>
+                    c.firstName === parsed.firstName &&
+                    c.lastName === parsed.lastName,
+            );
+            if (!match) continue;
+            const a1Row = rowIdx + 2; // sheet starts at A2
+            if (match.phone !== undefined) {
+                const colLetter = this.getColumnLetter(COLUMN_MAPPING.phone);
+                data.push({
+                    range: `Guests!${colLetter}${a1Row}`,
+                    values: [[match.phone]],
+                });
+            }
+            if (match.email !== undefined) {
+                const colLetter = this.getColumnLetter(COLUMN_MAPPING.email);
+                data.push({
+                    range: `Guests!${colLetter}${a1Row}`,
+                    values: [[match.email]],
+                });
+            }
+        }
+        if (data.length > 0) {
+            await this.sheets.spreadsheets.values.batchUpdate({
+                spreadsheetId: this.sheetId,
+                requestBody: {
+                    valueInputOption: "USER_ENTERED",
+                    data,
+                },
+            });
+        }
+    }
 
     private getColumnLetter(columnIndex: number): string {
         let letter = "";

@@ -5,6 +5,8 @@ import { LoginForm } from "./(components)/login-form";
 import { PartySelector } from "./(components)/party-selector";
 import { EventsForm } from "./(components)/events-form";
 import { SuccessMessage } from "./(components)/success-message";
+import { ContactForm } from "./(components)/contact-form";
+import { RsvpHeader } from "./(components)/rsvp-header";
 
 type RsvpStep = "login" | "party-selection" | "events" | "success";
 
@@ -23,13 +25,15 @@ export default function RsvpPage() {
     if (isAuthenticated) {
         if (step === "success") {
             return (
-                <div className="min-h-screen bg-gradient-to-b from-neutral-50 to-neutral-100 px-4 py-16">
+                <div className="mx-auto max-w-3xl px-4 pb-24">
                     <SuccessMessage />
                 </div>
             );
         }
         return (
-            <div className="min-h-screen bg-gradient-to-b from-neutral-50 to-neutral-100 px-4 py-16">
+            <div className="mx-auto max-w-3xl px-4 pb-24">
+                {/* TODO implement toasts */}
+                <ContactForm onSaved={() => console.log("Contact info saved")} />
                 <EventsForm onSuccess={() => setStep("success")} />
             </div>
         );
@@ -48,7 +52,7 @@ export default function RsvpPage() {
         }
     };
     return (
-        <div className="min-h-screen bg-gradient-to-b from-neutral-50 to-neutral-100 px-4 py-16">
+        <div className="mx-auto max-w-3xl px-4 pb-24">
             {step === "login" && (
                 <LoginForm onSuccess={handleLoginSuccess} />
             )}

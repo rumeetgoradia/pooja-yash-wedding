@@ -75,7 +75,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
                                         {...field}
                                         id="login-name"
                                         aria-invalid={fieldState.invalid}
-                                        placeholder="First Last"
+                                        placeholder="Pooja Antala"
                                         autoComplete="name"
                                     />
                                     {fieldState.invalid && (

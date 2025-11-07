@@ -118,4 +118,26 @@ export const rsvpRouter = createTRPCRouter({
                 message: "RSVPs submitted successfully",
             };
         }),
+
+    updateContactInfo: publicProcedure
+        .input(
+            z.object({
+                partyName: z.string().min(1, 'Party name required'),
+                contacts: z.array(
+                    z.object({
+                        firstName: z.string(),
+                        lastName: z.string(),
+                        phone: z.string().optional(),  // allow empty / undefined → clear cell
+                        email: z.string().email().optional(),
+                    }),
+                ),
+            }),
+        )
+        .mutation(async ({ input }) => {
+            await sheetsService.updateContacts(input.partyName, input.contacts);
+            return {
+                success: true,
+                message: 'Contact information saved',
+            };
+        }),
 });
