@@ -54,7 +54,7 @@ export function ContactForm({ onSaved }: ContactFormProps) {
         >
             <div className="mb-4">
                 <h2 id="contact-heading" className="font-serif text-2xl font-medium text-neutral-900">
-                    Contact information <span className="text-neutral-500">(optional)</span>
+                    Contact Information
                 </h2>
             </div>
 
