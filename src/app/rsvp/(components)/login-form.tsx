@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
@@ -14,11 +13,9 @@ import {
 import { Input } from "~/components/ui/input";
 import { api } from "~/trpc/react";
 import { useGuest } from "~/hooks/use-guest";
-import { cn } from "~/lib/utils";
 
 const loginSchema = z.object({
     name: z.string().min(1, "Please enter your name."),
-    password: z.string().min(1, "Please enter your password."),
 });
 type LoginFormData = z.infer<typeof loginSchema>;
 
@@ -32,11 +29,10 @@ interface LoginFormProps {
 
 export function LoginForm({ onSuccess }: LoginFormProps) {
     const { setParty } = useGuest();
-    const [showPassword, setShowPassword] = useState(false);
 
     const form = useForm<LoginFormData>({
         resolver: zodResolver(loginSchema),
-        defaultValues: { name: "", password: "" },
+        defaultValues: { name: "" },
     });
 
     const authenticateMutation = api.rsvp.authenticate.useMutation({
@@ -65,7 +61,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
                     RSVP
                 </h1>
                 <p className="mt-2 text-sm text-neutral-600">
-                    Please enter your name and the password provided in your invitation.
+                    Please enter your name to access your party&apos;s RSVP.
                 </p>
             </div>
 
@@ -88,50 +84,14 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
                                         className="border-neutral-300 focus-visible:ring-neutral-500"
                                     />
                                     {fieldState.invalid && (
-                                        <FieldError errors={[fieldState.error]} />
-                                    )}
-                                </Field>
-                            )}
-                        />
-
-                        <Controller
-                            name="password"
-                            control={form.control}
-                            render={({ field, fieldState }) => (
-                                <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor="login-password">Password</FieldLabel>
-
-                                    <div className="relative">
-                                        <Input
-                                            {...field}
-                                            id="login-password"
-                                            type={showPassword ? "text" : "password"}
-                                            aria-invalid={fieldState.invalid}
-                                            autoComplete="current-password"
-                                            className="pr-24 border-neutral-300 focus-visible:ring-neutral-500"
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={() => setShowPassword((s) => !s)}
-                                            className={cn(
-                                                "absolute inset-y-0 right-2 my-auto rounded-md px-2 text-sm",
-                                                "text-neutral-600 hover:text-neutral-900"
-                                            )}
-                                            aria-label={showPassword ? "Hide password" : "Show password"}
-                                        >
-                                            {showPassword ? "Hide" : "Show"}
-                                        </button>
-                                    </div>
-
-                                    {fieldState.invalid && (
-                                        <FieldError errors={[fieldState.error]} />
+                                        <FieldError className="text-red-700" errors={[fieldState.error]} />
                                     )}
                                 </Field>
                             )}
                         />
 
                         {form.formState.errors.root && (
-                            <div className="rounded-md bg-red-50 p-3 text-sm text-red-800">
+                            <div className="rounded-md text-center bg-red-50 p-3 text-sm text-red-800">
                                 {form.formState.errors.root.message}
                             </div>
                         )}

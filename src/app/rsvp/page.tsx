@@ -7,8 +7,8 @@ import { PartySelector } from "./(components)/party-selector";
 import { EventsForm } from "./(components)/events-form";
 import { ContactForm } from "./(components)/contact-form";
 import { RsvpHeader } from "./(components)/rsvp-header";
-import { Button } from "~/components/ui/button";
 import { Toaster, toast } from "sonner";
+import { Separator } from "~/components/ui/separator";
 
 type RsvpStep = "login" | "party-selection" | "events";
 
@@ -58,7 +58,7 @@ export default function RsvpPage() {
                                     logout();
                                     setStep("login");
                                 }}
-                                className="text-sm text-neutral-600 underline underline-offset-4 hover:text-neutral-900  cursor-pointer"
+                                className="text-md text-neutral-600 underline underline-offset-4 hover:text-neutral-900  cursor-pointer"
                                 aria-label="Log in again"
                             >
                                 Log out
@@ -68,25 +68,29 @@ export default function RsvpPage() {
                         </div>
 
                         <div className="space-y-12">
-                            <ContactForm
-                                onSaved={() => toast.success("Contact information saved!")}
-                            />
-
-                            {/* Section divider for visual separation */}
-                            <div className="relative my-8">
-                                <div className="h-px w-full bg-neutral-200" />
-                                <span
-                                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-neutral-200 bg-white px-2.5 py-0.5 text-[11px] font-medium tracking-wide text-neutral-500 shadow-sm"
-                                >
-                                    RSVP
-                                </span>
-                            </div>
-
-
                             <EventsForm
                                 onSuccess={() => toast.success("RSVPs submitted - thank you!")}
                                 onError={(msg) => toast.error(msg ?? "Something went wrong")}
                             />
+
+                            <Separator />
+
+                            <ContactForm
+                                onSaved={() => toast.success("Contact information saved!")}
+                            />
+                            <div className='w-full flex items-center justify-center'>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        logout();
+                                        setStep("login");
+                                    }}
+                                    className="text-md text-neutral-600 underline underline-offset-4 hover:text-neutral-900  cursor-pointer"
+                                    aria-label="Log in again"
+                                >
+                                    Log out
+                                </button>
+                            </div>
                         </div>
                     </>
                 )}

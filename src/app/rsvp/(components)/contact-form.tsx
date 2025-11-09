@@ -54,8 +54,9 @@ export function ContactForm({ onSaved }: ContactFormProps) {
         >
             <div className="mb-4">
                 <h2 id="contact-heading" className="font-serif text-2xl font-medium text-neutral-900">
-                    Contact Information
+                    Contact Information <span className="text-neutral-600">(optional)</span>
                 </h2>
+                <p className="mt-1 text-md text-neutral-600">Please provide the contact information for each guest attending to stay up to date with updates regarding wedding events.</p>
             </div>
 
             <ul className="divide-y divide-neutral-200/70">

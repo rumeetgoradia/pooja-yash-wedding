@@ -1,12 +1,16 @@
 // events-form.tsx
 "use client";
-import { useEffect, useMemo, useRef, useState } from "react";
+
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "~/components/ui/button";
+import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
+import { Label } from "~/components/ui/label";
+import { Check, X } from "lucide-react";
 import { api } from "~/trpc/react";
 import { WEDDING_EVENTS } from "~/lib/data/rsvp-events";
 import type { RsvpResponse } from "~/types/rsvp";
-import { cn } from "~/lib/utils";
 import { useGuest } from "~/hooks/use-guest";
+import { cn } from "~/lib/utils";
 
 interface EventsFormProps {
     onSuccess: () => void;
@@ -14,23 +18,17 @@ interface EventsFormProps {
 }
 
 export function EventsForm({ onSuccess, onError }: EventsFormProps) {
-
-
     const { party, setParty } = useGuest();
-    const [responses, setResponses] = useState<Record<string, Record<string, RsvpResponse>>>(() => {
-        if (!party) return {};
-        const initial: Record<string, Record<string, RsvpResponse>> = {};
-        party.members.forEach((m) => {
-            const k = `${m.firstName}-${m.lastName}`;
-            initial[k] = { ...m.rsvps };
-        });
-        return initial;
-    });
+
+    const [responses, setResponses] = useState<
+        Record<string, Record<string, RsvpResponse>>
+    >({});
 
     const utils = api.useUtils();
+
     const getPartyQuery = api.rsvp.getParty.useQuery(
         { partyName: party?.name ?? "" },
-        { enabled: !!party?.name, refetchOnMount: "always", staleTime: 0 }
+        { enabled: !!party?.name, refetchOnMount: "always", staleTime: 0 },
     );
 
     useEffect(() => {
@@ -53,17 +51,15 @@ export function EventsForm({ onSuccess, onError }: EventsFormProps) {
         onError: (e) => onError?.(e.message),
     });
 
-    const setValue = (guestKey: string, eventColumnName: string, value: RsvpResponse) => {
+    const setValue = (
+        guestKey: string,
+        eventColumnName: string,
+        value: RsvpResponse,
+    ) => {
         setResponses((prev) => ({
             ...prev,
-            [guestKey]: { ...prev[guestKey], [eventColumnName]: value },
+            [guestKey]: { ...(prev[guestKey] ?? {}), [eventColumnName]: value },
         }));
-    };
-
-    const toggleValue = (guestKey: string, eventColumnName: string, value: true | false) => {
-        const current = responses[guestKey]?.[eventColumnName];
-        // clicking the selected value again clears it (null)
-        setValue(guestKey, eventColumnName, current === value ? null : value);
     };
 
     const unansweredCount = useMemo(() => {
@@ -71,8 +67,9 @@ export function EventsForm({ onSuccess, onError }: EventsFormProps) {
         let count = 0;
         for (const m of party.members) {
             const k = `${m.firstName}-${m.lastName}`;
-            for (const e of WEDDING_EVENTS) {
-                if (responses[k]?.[e.columnName] == null) count++;
+            for (const event of WEDDING_EVENTS) {
+                const v = responses[k]?.[event.columnName];
+                if (v === null || typeof v === "undefined") count++;
             }
         }
         return count;
@@ -81,6 +78,7 @@ export function EventsForm({ onSuccess, onError }: EventsFormProps) {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (!party) return;
+
         const submissionResponses = party.members.flatMap((member) => {
             const gk = `${member.firstName}-${member.lastName}`;
             const guestResponses = responses[gk] ?? {};
@@ -91,63 +89,81 @@ export function EventsForm({ onSuccess, onError }: EventsFormProps) {
                 response: guestResponses[event.columnName] ?? null,
             }));
         });
-        submitRsvpsMutation.mutate({ partyName: party.name, responses: submissionResponses });
+
+        submitRsvpsMutation.mutate({
+            partyName: party.name,
+            responses: submissionResponses,
+        });
     };
 
     if (!party) return null;
 
     return (
         <section aria-labelledby="events-heading" className="relative">
-            <h2 id="events-heading" className="sr-only">Events</h2>
+            <h2 id="events-heading" className="sr-only">
+                Events
+            </h2>
 
-            <form onSubmit={handleSubmit} className="space-y-8">
+            <form onSubmit={handleSubmit} className="space-y-7">
                 {WEDDING_EVENTS.map((event) => (
                     <div
                         key={event.id}
-                        className="rounded-xl bg-white p-6 shadow-sm ring-1 ring-neutral-200/60"
+                        className="rounded-xl bg-white p-5 shadow-sm ring-1 ring-neutral-200/60"
                     >
-                        <div className="mb-4">
+                        <div className="mb-3">
                             <h3 className="font-serif text-xl sm:text-2xl font-medium text-neutral-900">
                                 {event.name}
                             </h3>
                             <p className="mt-1 text-sm text-neutral-600">
-                                {event.date} &middot; {event.time}
+                                {event.date} · {event.time}
                             </p>
                         </div>
 
-                        <ul className="divide-y divide-neutral-200/70">
+                        <ul className="divide-y divide-neutral-200/60">
                             {party.members.map((member) => {
                                 const guestKey = `${member.firstName}-${member.lastName}`;
                                 const current = responses[guestKey]?.[event.columnName];
 
-                                const isAttending = current === true;
-                                const isNotAttending = current === false;
+                                const radioValue: "yes" | "no" | "" =
+                                    current === true ? "yes" : current === false ? "no" : "";
+
+                                const nameId = `${guestKey}-${event.columnName}`;
+                                const isPending = radioValue === "";
 
                                 return (
-                                    <li key={guestKey} className="py-3">
+                                    <li key={guestKey} className="py-2.5">
                                         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                                            <span className="font-medium text-neutral-900">
-                                                {member.firstName} {member.lastName}
-                                            </span>
+                                            <div className="flex items-center gap-2">
+                                                <span className="font-medium text-neutral-900">
+                                                    {member.firstName} {member.lastName}
+                                                </span>
+                                                {isPending && <PendingDot ariaLabel="Response pending" />}
+                                            </div>
 
-                                            {/* Outline pills — no fills. Active = colored border + text */}
-                                            <div role="group" aria-label={`RSVP for ${member.firstName} ${member.lastName} – ${event.name}`} className="inline-flex gap-2">
-                                                <Pill
-                                                    ariaLabel="Attending"
-                                                    active={isAttending}
-                                                    color="green"
-                                                    onClick={() => toggleValue(guestKey, event.columnName, true)}
+                                            <div className="flex items-center gap-2">
+                                                <RadioGroup
+                                                    aria-label={`${member.firstName} ${member.lastName} - ${event.name}`}
+                                                    value={radioValue}
+                                                    onValueChange={(val) => {
+                                                        if (val === "yes") setValue(guestKey, event.columnName, true);
+                                                        else if (val === "no") setValue(guestKey, event.columnName, false);
+                                                    }}
+                                                    className="grid w-full grid-cols-2 gap-2 sm:inline-flex sm:w-auto"
                                                 >
-                                                    Attending
-                                                </Pill>
-                                                <Pill
-                                                    ariaLabel="Not attending"
-                                                    active={isNotAttending}
-                                                    color="red"
-                                                    onClick={() => toggleValue(guestKey, event.columnName, false)}
-                                                >
-                                                    Not attending
-                                                </Pill>
+                                                    <ColorRadio
+                                                        id={`${nameId}-yes`}
+                                                        value="yes"
+                                                        label="Attending"
+                                                        scheme="green"
+                                                    />
+                                                    <ColorRadio
+                                                        id={`${nameId}-no`}
+                                                        value="no"
+                                                        label="Not attending"
+                                                        scheme="red"
+                                                    />
+                                                </RadioGroup>
+
                                             </div>
                                         </div>
                                     </li>
@@ -167,16 +183,16 @@ export function EventsForm({ onSuccess, onError }: EventsFormProps) {
                 <div className="sticky bottom-4 z-10">
                     <div className="mx-auto max-w-3xl rounded-md bg-white/80 px-2 py-4 shadow-lg backdrop-blur ring-1 ring-neutral-200">
                         <div className="flex items-center gap-3 px-2">
-                            <span className="ml-2 text-sm text-neutral-700">
+                            <span className="ml-2 flex items-center gap-2 text-sm text-neutral-700">
+                                {unansweredCount > 0 && <PendingDot ariaLabel="Responses pending" />}
                                 {unansweredCount > 0
-                                    ? `${unansweredCount} response${unansweredCount === 1 ? "" : "s"} left`
+                                    ? `${unansweredCount} response${unansweredCount === 1 ? "" : "s"
+                                    } left`
                                     : "All set!"}
                             </span>
-                            <div className="ml-auto">
-                                <Button type="submit" size="lg" disabled={submitRsvpsMutation.isPending}>
-                                    {submitRsvpsMutation.isPending ? "Submitting…" : "Submit RSVPs"}
-                                </Button>
-                            </div>
+                            <Button type="submit" className="ml-auto" disabled={submitRsvpsMutation.isPending || unansweredCount == party.members.length * WEDDING_EVENTS.length}>
+                                Save responses
+                            </Button>
                         </div>
                     </div>
                 </div>
@@ -185,39 +201,73 @@ export function EventsForm({ onSuccess, onError }: EventsFormProps) {
     );
 }
 
-function Pill({
-    children,
-    active,
-    onClick,
-    ariaLabel,
-    color, // "green" | "red"
+function ColorRadio({
+    id,
+    value,
+    label,
+    scheme,
 }: {
-    children: React.ReactNode;
-    active: boolean;
-    onClick: () => void;
-    ariaLabel: string;
-    color: "green" | "red";
+    id: string;
+    value: "yes" | "no";
+    label: string;
+    scheme: "green" | "red";
 }) {
-    const base =
-        "rounded-full px-3 py-1.5 text-sm font-medium transition-colors focus:outline-none border";
-    const palette =
-        color === "green"
-            ? active
-                ? "border-green-600 text-green-700"
-                : "border-neutral-300 text-neutral-700 hover:border-green-500 hover:text-green-700"
-            : active
-                ? "border-red-600 text-red-700"
-                : "border-neutral-300 text-neutral-700 hover:border-red-500 hover:text-red-700";
+    const checked =
+        scheme === "green"
+            ? [
+                "peer-data-[state=checked]:bg-green-50",
+                "peer-data-[state=checked]:border-green-600",
+                "peer-data-[state=checked]:text-green-700",
+            ].join(" ")
+            : [
+                "peer-data-[state=checked]:bg-red-50",
+                "peer-data-[state=checked]:border-red-600",
+                "peer-data-[state=checked]:text-red-700",
+            ].join(" ");
+
+    const focus =
+        scheme === "green"
+            ? "focus-visible:outline-green-600"
+            : "focus-visible:outline-red-600";
 
     return (
-        <button
-            type="button"
-            aria-pressed={active}
-            aria-label={ariaLabel}
-            onClick={onClick}
-            className={cn(base, palette)}
+        <div className="relative">
+            {/* important: the radio must be a peer */}
+            <RadioGroupItem id={id} value={value} className="peer sr-only" />
+            <Label
+                htmlFor={id}
+                className={cn(
+                    "w-full sm:w-auto justify-center min-w-0",
+                    "inline-flex select-none items-center gap-2 rounded-md border px-3 py-2 text-sm font-medium transition-colors",
+                    "border-neutral-300 bg-white text-neutral-800 hover:bg-neutral-50",
+                    "focus-visible:outline-2 focus-visible:outline-offset-2",
+                    focus,
+                    // selected (faint tint + stronger border + label color)
+                    checked,
+                )}
+            >
+                {value === "yes" ? (
+                    <Check className="h-4 w-4" aria-hidden="true" />
+                ) : (
+                    <X className="h-4 w-4" aria-hidden="true" />
+                )}
+                <span>{label}</span>
+            </Label>
+        </div>
+    );
+}
+
+
+
+function PendingDot({ ariaLabel }: { ariaLabel?: string }) {
+    return (
+        <span
+            className="relative inline-flex h-2.5 w-2.5"
+            aria-label={ariaLabel ?? "Pending"}
+            title="Pending"
         >
-            {children}
-        </button>
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/40 opacity-75" />
+            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-primary" />
+        </span>
     );
 }

@@ -18,7 +18,6 @@ export const rsvpRouter = createTRPCRouter({
         .input(
             z.object({
                 name: z.string().min(1, "Name is required"),
-                password: z.string().min(1, "Password is required"),
             }),
         )
         .mutation(async ({ input, ctx }) => {
@@ -31,13 +30,6 @@ export const rsvpRouter = createTRPCRouter({
                 throw new TRPCError({
                     code: "TOO_MANY_REQUESTS",
                     message: `Too many attempts. Please try again in ${secondsRemaining} seconds.`,
-                });
-            }
-
-            if (input.password !== env.RSVP_PASSWORD) {
-                throw new TRPCError({
-                    code: "UNAUTHORIZED",
-                    message: "Incorrect password!",
                 });
             }
 
