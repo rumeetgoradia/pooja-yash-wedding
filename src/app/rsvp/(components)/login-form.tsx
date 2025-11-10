@@ -78,7 +78,6 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
                                         {...field}
                                         id="login-name"
                                         aria-invalid={fieldState.invalid}
-                                        placeholder="Pooja Antala"
                                         autoComplete="name"
                                         autoFocus
                                         className="border-neutral-300 focus-visible:ring-neutral-500"
