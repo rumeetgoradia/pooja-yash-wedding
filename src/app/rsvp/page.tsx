@@ -1,4 +1,3 @@
-// page.tsx
 "use client";
 import { useState, useEffect } from "react";
 import { useGuest } from "~/hooks/use-guest";
@@ -8,11 +7,13 @@ import { EventsForm } from "./(components)/events-form";
 import { ContactForm } from "./(components)/contact-form";
 import { RsvpHeader } from "./(components)/rsvp-header";
 import { Toaster, toast } from "sonner";
+import { useRouter } from "next/navigation"
 import { Separator } from "~/components/ui/separator";
 
 type RsvpStep = "login" | "party-selection" | "events";
 
 export default function RsvpPage() {
+    const router = useRouter();
     const { isAuthenticated, party, logout } = useGuest();
     const [step, setStep] = useState<RsvpStep>("login");
     const [parties, setParties] = useState<string[]>([]);
@@ -69,7 +70,9 @@ export default function RsvpPage() {
 
                         <div className="space-y-12">
                             <EventsForm
-                                onSuccess={() => toast.success("RSVPs submitted - thank you!")}
+                                onSuccess={() => toast.success("RSVPs submitted!", {
+                                    description: "We look forward to seeing you soon! Please fill out your contact information to stay updated.",
+                                })}
                                 onError={(msg) => toast.error(msg ?? "Something went wrong")}
                             />
 

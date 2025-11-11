@@ -11,6 +11,8 @@ import { WEDDING_EVENTS } from "~/lib/data/rsvp-events";
 import type { RsvpResponse } from "~/types/rsvp";
 import { useGuest } from "~/hooks/use-guest";
 import { cn } from "~/lib/utils";
+import { useRouter } from 'next/navigation'
+import Link from "next/link";
 
 interface EventsFormProps {
     onSuccess: () => void;
@@ -19,6 +21,7 @@ interface EventsFormProps {
 
 export function EventsForm({ onSuccess, onError }: EventsFormProps) {
     const { party, setParty } = useGuest();
+    const [submitted, setSubmitted] = useState<boolean>(false)
 
     const [responses, setResponses] = useState<
         Record<string, Record<string, RsvpResponse>>
@@ -30,6 +33,8 @@ export function EventsForm({ onSuccess, onError }: EventsFormProps) {
         { partyName: party?.name ?? "" },
         { enabled: !!party?.name, refetchOnMount: "always", staleTime: 0 },
     );
+
+    const router = useRouter();
 
     useEffect(() => {
         if (getPartyQuery.data) {
@@ -47,6 +52,8 @@ export function EventsForm({ onSuccess, onError }: EventsFormProps) {
         onSuccess: async () => {
             await utils.rsvp.getParty.invalidate();
             onSuccess();
+            setSubmitted(true);
+            router.push("#contact");
         },
         onError: (e) => onError?.(e.message),
     });
@@ -145,6 +152,7 @@ export function EventsForm({ onSuccess, onError }: EventsFormProps) {
                                                     aria-label={`${member.firstName} ${member.lastName} - ${event.name}`}
                                                     value={radioValue}
                                                     onValueChange={(val) => {
+                                                        setSubmitted(false);
                                                         if (val === "yes") setValue(guestKey, event.columnName, true);
                                                         else if (val === "no") setValue(guestKey, event.columnName, false);
                                                     }}
@@ -182,18 +190,27 @@ export function EventsForm({ onSuccess, onError }: EventsFormProps) {
                 {/* Sticky submit bar */}
                 <div className="sticky bottom-4 z-10">
                     <div className="mx-auto max-w-3xl rounded-md bg-white/80 px-2 py-4 shadow-lg backdrop-blur ring-1 ring-neutral-200">
-                        <div className="flex items-center gap-3 px-2">
-                            <span className="ml-2 flex items-center gap-2 text-sm text-neutral-700">
-                                {unansweredCount > 0 && <PendingDot ariaLabel="Responses pending" />}
-                                {unansweredCount > 0
-                                    ? `${unansweredCount} response${unansweredCount === 1 ? "" : "s"
-                                    } left`
-                                    : "All set!"}
-                            </span>
-                            <Button type="submit" className="ml-auto" disabled={submitRsvpsMutation.isPending || unansweredCount == party.members.length * WEDDING_EVENTS.length}>
-                                Save responses
-                            </Button>
-                        </div>
+                        {submitted ?
+                            <div className="flex justify-center items-center text-sm gap-3 px-2">
+                                Responses saved! Please provide your contact info below.
+                            </div>
+                            :
+                            <div className="flex items-center gap-3 px-2">
+                                <span className="ml-2 flex items-center gap-2 text-sm text-neutral-700">
+                                    {unansweredCount === 0 ?
+                                        "All set! Please save your responses."
+                                        : (
+                                            <div className="flex items-center text-muted-foreground gap-2">
+                                                <PendingDot />
+                                                {unansweredCount} responses left
+                                            </div>
+                                        )}
+                                </span>
+                                <Button type="submit" className="ml-auto" disabled={submitRsvpsMutation.isPending || unansweredCount == party.members.length * WEDDING_EVENTS.length}>
+                                    Save responses
+                                </Button>
+                            </div>
+                        }
                     </div>
                 </div>
             </form>

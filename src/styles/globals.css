@@ -161,3 +161,7 @@
     max-width: var(--container-7xl);
     width: 100%;
 }
+
+html {
+    scroll-behavior: smooth;
+}

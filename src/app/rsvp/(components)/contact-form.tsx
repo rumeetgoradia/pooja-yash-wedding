@@ -48,9 +48,9 @@ export function ContactForm({ onSaved }: ContactFormProps) {
     if (!party) return null;
 
     return (
-        <section
+        <section id="contact"
             aria-labelledby="contact-heading"
-            className="rounded-xl bg-white p-6 shadow-sm ring-1 ring-neutral-200/60"
+            className="rounded-xl scroll-mt-24 bg-white p-6 shadow-sm ring-1 ring-neutral-200/60"
         >
             <div className="mb-4">
                 <h2 id="contact-heading" className="font-serif text-2xl font-medium text-neutral-900">
