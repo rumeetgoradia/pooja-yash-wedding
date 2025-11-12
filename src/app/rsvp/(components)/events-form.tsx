@@ -12,7 +12,6 @@ import type { RsvpResponse } from "~/types/rsvp";
 import { useGuest } from "~/hooks/use-guest";
 import { cn } from "~/lib/utils";
 import { useRouter } from 'next/navigation'
-import Link from "next/link";
 
 interface EventsFormProps {
     onSuccess: () => void;

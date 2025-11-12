@@ -7,13 +7,11 @@ import { EventsForm } from "./(components)/events-form";
 import { ContactForm } from "./(components)/contact-form";
 import { RsvpHeader } from "./(components)/rsvp-header";
 import { Toaster, toast } from "sonner";
-import { useRouter } from "next/navigation"
 import { Separator } from "~/components/ui/separator";
 
 type RsvpStep = "login" | "party-selection" | "events";
 
 export default function RsvpPage() {
-    const router = useRouter();
     const { isAuthenticated, party, logout } = useGuest();
     const [step, setStep] = useState<RsvpStep>("login");
     const [parties, setParties] = useState<string[]>([]);
