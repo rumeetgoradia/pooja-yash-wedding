@@ -35,7 +35,7 @@ export default function DayDisplay({ dayISO, hero, vibe, events, flip }: Props) 
                             {formatDayHeader(dayISO)}
                         </h2>
                         {vibe && (
-                            <p className="mt-1 font-serif text-xl md:text-2xl font-light tracking-wider [font-variant:small-caps]  text-zinc-700 ">
+                            <p className="mt-1 font-serif text-xl md:text-[22px] font-light tracking-wider [font-variant:small-caps]  text-zinc-700 ">
                                 {vibe}
                             </p>
                         )}
