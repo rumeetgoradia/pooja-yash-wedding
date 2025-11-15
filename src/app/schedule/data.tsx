@@ -31,8 +31,8 @@ export const EVENTS: EventItem[] = [
     {
         id: "welcome-dinner",
         title: "Welcome Dinner",
-        start: "2026-06-18T18:00:00-04:00",
-        end: "2026-06-18T22:00:00-04:00",
+        start: "2026-06-18T18:00:00",
+        end: "2026-06-18T22:00:00",
         venue: { name: "The Beach House" },
         description: (
             <>
@@ -49,8 +49,8 @@ export const EVENTS: EventItem[] = [
     {
         id: "grah-shanti-ganesh-puja",
         title: "Grah Shanti & Ganesh Puja",
-        start: "2026-06-19T08:00:00-04:00",
-        end: "2026-06-19T10:00:00-04:00",
+        start: "2026-06-19T08:00:00",
+        end: "2026-06-19T10:00:00",
         venue: { name: "The Palm Terrace" },
         description: (
             <>
@@ -67,8 +67,8 @@ export const EVENTS: EventItem[] = [
     {
         id: "haldi-celebration",
         title: "Couple's Haldi Celebration",
-        start: "2026-06-19T10:30:00-04:00",
-        end: "2026-06-19T12:00:00-04:00",
+        start: "2026-06-19T10:30:00",
+        end: "2026-06-19T12:00:00",
         venue: { name: "The North Beach" },
         description: (
             <>
@@ -84,8 +84,8 @@ export const EVENTS: EventItem[] = [
     {
         id: "sangeet-night",
         title: "Sangeet Night",
-        start: "2026-06-19T18:00:00-04:00",
-        end: "2026-06-19T22:00:00-04:00",
+        start: "2026-06-19T18:00:00",
+        end: "2026-06-19T22:00:00",
         venue: { name: "The Ritz Carlton Ballroom" },
         description: (
             <>
@@ -107,7 +107,7 @@ export const EVENTS: EventItem[] = [
     {
         id: "jaan-aagman",
         title: "Jaan Aagman",
-        start: "2026-06-20T08:00:00-04:00",
+        start: "2026-06-20T08:00:00",
         venue: { name: "Front Driveway" },
         description: (
             <>
@@ -125,8 +125,8 @@ export const EVENTS: EventItem[] = [
     {
         id: "wedding-ceremony-lunch",
         title: "Wedding Ceremony & Lunch",
-        start: "2026-06-20T09:00:00-04:00",
-        end: "2026-06-20T11:00:00-04:00",
+        start: "2026-06-20T09:00:00",
+        end: "2026-06-20T11:00:00",
         venue: { name: "The Center Courtyard" },
         description: (
             <>Sacred vows and celebration, followed by a delicious lunch.</>
@@ -138,8 +138,8 @@ export const EVENTS: EventItem[] = [
     {
         id: "cocktail-hour",
         title: "Cocktail Hour",
-        start: "2026-06-20T17:30:00-04:00",
-        end: "2026-06-20T18:30:00-04:00",
+        start: "2026-06-20T17:30:00",
+        end: "2026-06-20T18:30:00",
         venue: { name: "The Vanderbilt Courtyard" },
         description: (
             <>
@@ -157,8 +157,8 @@ export const EVENTS: EventItem[] = [
     {
         id: "reception",
         title: "Reception",
-        start: "2026-06-20T19:00:00-04:00",
-        end: "2026-06-20T23:00:00-04:00",
+        start: "2026-06-20T19:00:00",
+        end: "2026-06-20T23:00:00",
         venue: { name: "The Vanderbilt Ballroom" },
         description: <>Celebrate the newlyweds with music, food, and fun.</>,
         dressCode: {
@@ -168,8 +168,8 @@ export const EVENTS: EventItem[] = [
     {
         id: "farewell-brunch",
         title: "Farewell Brunch",
-        start: "2026-06-21T09:00:00-04:00",
-        end: "2026-06-21T11:00:00-04:00",
+        start: "2026-06-21T09:00:00",
+        end: "2026-06-21T11:00:00",
         venue: { name: "The Beach House" },
         description: (
             <>
@@ -186,7 +186,7 @@ export const EVENTS: EventItem[] = [
     {
         id: "checkout",
         title: "Checkout",
-        start: "2026-06-21T11:00:00-04:00",
+        start: "2026-06-21T11:00:00",
         venue: { name: "Hotel Lobby" },
         description: <>A bittersweet moment until we meet again, see ya!</>,
         dressCode: {

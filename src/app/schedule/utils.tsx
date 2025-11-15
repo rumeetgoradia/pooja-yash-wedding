@@ -31,10 +31,7 @@ export function formatTimeRange(startISO: string, endISO?: string) {
     const end = endISO ? new Date(endISO) : null;
     const fmt: Intl.DateTimeFormatOptions = { hour: "numeric", minute: "2-digit" };
     return end
-        ? `${start.toLocaleTimeString(undefined, fmt)} – ${end.toLocaleTimeString(
-            undefined,
-            fmt
-        )}`
+        ? `${start.toLocaleTimeString(undefined, fmt)} - ${end.toLocaleTimeString(undefined, fmt)}`
         : start.toLocaleTimeString(undefined, fmt);
 }
 
