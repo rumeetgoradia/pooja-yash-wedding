@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export const FAQS_DATA: {
     icon: string;
     question: string;
@@ -108,6 +110,17 @@ export const FAQS_DATA: {
                     applies two days before and two days after the wedding events.
                 </>,
             ],
+        },
+        {
+            icon: "📖",
+            question: "How do I book my room?",
+            answer: [
+                <>
+                    Please visit our{" "}
+                    <Link href='https://book.passkey.com/event/51089211/owner/49699364/home' target='_blank' rel="noopener noreferrer" className='text-brand-400'>hotel room block page</Link>
+                    {" "}to book your stay at The Ritz-Carlton, Naples Beach Resort. Hotel rates are pre-negotiated and you will not require any codes for discounted rates.
+                </>
+            ]
         },
         {
             icon: "🌙",
