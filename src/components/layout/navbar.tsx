@@ -23,7 +23,7 @@ const ROUTES: { title: string; path: string }[] = [
     },
     {
         title: "Travel & Accommodations",
-        path: "/accomodations",
+        path: "/accommodations",
     },
     {
         title: "FAQs",
